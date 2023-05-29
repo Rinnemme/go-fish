@@ -55,9 +55,9 @@ body {
 }
 
 #button-container {
-    width:60%;
-    min-width:360px;
-    max-width:600px;
+    width:50%;
+    min-width:300px;
+    max-width:500px;
     display:flex;
     align-items:center;
     justify-content:center;

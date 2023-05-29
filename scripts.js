@@ -133,6 +133,7 @@ okStart.addEventListener("click", function() {
     toggleVisibility(okStart)
     if (currentTurn==="bot") {
         botAsk()
+        toggleVisibility(myTurn)
     }
     if (currentTurn==="player") {
         playerTurn()
