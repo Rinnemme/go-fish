@@ -9,6 +9,85 @@ body {
     width:100vw;
 }
 
+#score {
+    position:absolute;
+    right:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+}
+
+.score-label {
+    font-weight:bold;
+}
+
+#player-score,
+#bot-score {
+    padding:30px;
+    font-size:30px;
+}
+
+#header-image {
+    width:50%;
+    max-width:500px;
+    margin-bottom:50px;
+}
+
+#player-score {
+    background-color:black;
+    color:white;
+}
+
+#bot-score,
+#message {
+    background-color:rgb(255, 173, 173);
+    color:black;
+}
+
+#message {
+    padding:15px;
+    margin-bottom:20px;
+}
+
+#button-container {
+    width:60%;
+    max-width:600px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.game-button {
+    display:none;
+}
+
+button {
+    padding:8px; 
+    margin:5px;
+    background-color:rgb(0,0,0);
+    color:white;
+    border:none;
+    border-radius:5px;
+    font-size:16px;
+}
+
+button:hover {
+    scale:1.05;
+    transition:1s;
+    cursor:pointer;
+    background-color:rgb(45,45,45)
+}
+
+button:active {
+    background-color:rgb(228, 55, 47);
+    scale:.95;
+    transition:0s;
+}
+
 #hand-and-fade {
     gap:0px;
     display:flex;
@@ -52,4 +131,8 @@ body {
     z-index:1;
     height:100%;
     box-shadow:0px 0px 20px 20px rgb(255, 255, 255);
+}
+
+#score-button {
+    margin-top:20px;
 }

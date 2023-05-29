@@ -7,64 +7,90 @@
     <title>Go Fish</title>
 </head>
 <body>
-    <div id=hand-and-fade>
+    <div id="score">
+        <div class="score-label">Human</div>
+        <div id="player-score">0</div>
+        <div class="score-label">Bot</div>
+        <div id="bot-score">0</div>
+    </div>
+    <img id="header-image" src="img/heading.png">
+    <div id="message">this is an example message!</div>
+    <div id="button-container">
+        <button class="game-button" id="go-fish">Go fish!</button>
+        <button class="game-button" id="ask-bot">Do you have any...</button>
+        <button class="game-button" id="rank2">Twos?</button>
+        <button class="game-button" id="rank3">Threes?</button>
+        <button class="game-button" id="rank4">Fours?</button>
+        <button class="game-button" id="rank5">Fives?</button>
+        <button class="game-button" id="rank6">Sixes?</button>
+        <button class="game-button" id="rank7">Sevens?</button>
+        <button class="game-button" id="rank8">Eights?</button>
+        <button class="game-button" id="rank9">Nines?</button>
+        <button class="game-button" id="rank10">Tens?</button>
+        <button class="game-button" id="rankjack">Jacks?</button>
+        <button class="game-button" id="rankqueen">Queens?</button>
+        <button class="game-button" id="rankking">Kings?</button>
+        <button class="game-button" id="rankace">Queens?</button>
+    </div>
+    <div id="hand-and-fade">
         <div id="fade-left"></div>
         <div id="hand-container">
-            <img class=playing-card id="spades2" src="img/2_of_spades.svg">
-            <img class=playing-card id="spades3" src="img/3_of_spades.svg">
-            <img class=playing-card id="spades4" src="img/4_of_spades.svg">
-            <img class=playing-card id="spades5" src="img/5_of_spades.svg">
-            <img class=playing-card id="spades6" src="img/6_of_spades.svg">
-            <img class=playing-card id="spades7" src="img/7_of_spades.svg">
-            <img class=playing-card id="spades8" src="img/8_of_spades.svg">
-            <img class=playing-card id="spades9" src="img/9_of_spades.svg">
-            <img class=playing-card id="spades10" src="img/10_of_spades.svg">
-            <img class=playing-card id="spadesjack" src="img/jack_of_spades.svg">
-            <img class=playing-card id="spadesqueen" src="img/queen_of_spades.svg">
-            <img class=playing-card id="spadesking" src="img/king_of_spades.svg">
-            <img class=playing-card id="spadesace" src="img/ace_of_spades.svg">
-            <img class=playing-card id="clubs2" src="img/2_of_clubs.svg">
-            <img class=playing-card id="clubs3" src="img/3_of_clubs.svg">
-            <img class=playing-card id="clubs4" src="img/4_of_clubs.svg">
-            <img class=playing-card id="clubs5" src="img/5_of_clubs.svg">
-            <img class=playing-card id="clubs6" src="img/6_of_clubs.svg">
-            <img class=playing-card id="clubs7" src="img/7_of_clubs.svg">
-            <img class=playing-card id="clubs8" src="img/8_of_clubs.svg">
-            <img class=playing-card id="clubs9" src="img/9_of_clubs.svg">
-            <img class=playing-card id="clubs10" src="img/10_of_clubs.svg">
-            <img class=playing-card id="clubsjack" src="img/jack_of_clubs.svg">
-            <img class=playing-card id="clubsqueen" src="img/queen_of_clubs.svg">
-            <img class=playing-card id="clubsking" src="img/king_of_clubs.svg">
-            <img class=playing-card id="clubsace" src="img/ace_of_clubs.svg">
-            <img class=playing-card id="diamonds2" src="img/2_of_diamonds.svg">
-            <img class=playing-card id="diamonds3" src="img/3_of_diamonds.svg">
-            <img class=playing-card id="diamonds4" src="img/4_of_diamonds.svg">
-            <img class=playing-card id="diamonds5" src="img/5_of_diamonds.svg">
-            <img class=playing-card id="diamonds6" src="img/6_of_diamonds.svg">
-            <img class=playing-card id="diamonds7" src="img/7_of_diamonds.svg">
-            <img class=playing-card id="diamonds8" src="img/8_of_diamonds.svg">
-            <img class=playing-card id="diamonds9" src="img/9_of_diamonds.svg">
-            <img class=playing-card id="diamonds10" src="img/10_of_diamonds.svg">
-            <img class=playing-card id="diamondsjack" src="img/jack_of_diamonds.svg">
-            <img class=playing-card id="diamondsqueen" src="img/queen_of_diamonds.svg">
-            <img class=playing-card id="diamondsking" src="img/king_of_diamonds.svg">
-            <img class=playing-card id="diamondsace" src="img/ace_of_diamonds.svg">
-            <img class=playing-card id="hearts2" src="img/2_of_hearts.svg">
-            <img class=playing-card id="hearts3" src="img/3_of_hearts.svg">
-            <img class=playing-card id="hearts4" src="img/4_of_hearts.svg">
-            <img class=playing-card id="hearts5" src="img/5_of_hearts.svg">
-            <img class=playing-card id="hearts6" src="img/6_of_hearts.svg">
-            <img class=playing-card id="hearts7" src="img/7_of_hearts.svg">
-            <img class=playing-card id="hearts8" src="img/8_of_hearts.svg">
-            <img class=playing-card id="hearts9" src="img/9_of_hearts.svg">
-            <img class=playing-card id="hearts10" src="img/10_of_hearts.svg">
-            <img class=playing-card id="heartsjack" src="img/jack_of_hearts.svg">
-            <img class=playing-card id="heartsqueen" src="img/queen_of_hearts.svg">
-            <img class=playing-card id="heartsking" src="img/king_of_hearts.svg">
-            <img class=playing-card id="heartsace" src="img/ace_of_hearts.svg">
+            <img class="playing-card" id="spades2" src="img/2_of_spades.svg">
+            <img class="playing-card" id="spades3" src="img/3_of_spades.svg">
+            <img class="playing-card" id="spades4" src="img/4_of_spades.svg">
+            <img class="playing-card" id="spades5" src="img/5_of_spades.svg">
+            <img class="playing-card" id="spades6" src="img/6_of_spades.svg">
+            <img class="playing-card" id="spades7" src="img/7_of_spades.svg">
+            <img class="playing-card" id="spades8" src="img/8_of_spades.svg">
+            <img class="playing-card" id="spades9" src="img/9_of_spades.svg">
+            <img class="playing-card" id="spades10" src="img/10_of_spades.svg">
+            <img class="playing-card" id="spadesjack" src="img/jack_of_spades.svg">
+            <img class="playing-card" id="spadesqueen" src="img/queen_of_spades.svg">
+            <img class="playing-card" id="spadesking" src="img/king_of_spades.svg">
+            <img class="playing-card" id="spadesace" src="img/ace_of_spades.svg">
+            <img class="playing-card" id="clubs2" src="img/2_of_clubs.svg">
+            <img class="playing-card" id="clubs3" src="img/3_of_clubs.svg">
+            <img class="playing-card" id="clubs4" src="img/4_of_clubs.svg">
+            <img class="playing-card" id="clubs5" src="img/5_of_clubs.svg">
+            <img class="playing-card" id="clubs6" src="img/6_of_clubs.svg">
+            <img class="playing-card" id="clubs7" src="img/7_of_clubs.svg">
+            <img class="playing-card" id="clubs8" src="img/8_of_clubs.svg">
+            <img class="playing-card" id="clubs9" src="img/9_of_clubs.svg">
+            <img class="playing-card" id="clubs10" src="img/10_of_clubs.svg">
+            <img class="playing-card" id="clubsjack" src="img/jack_of_clubs.svg">
+            <img class="playing-card" id="clubsqueen" src="img/queen_of_clubs.svg">
+            <img class="playing-card" id="clubsking" src="img/king_of_clubs.svg">
+            <img class="playing-card" id="clubsace" src="img/ace_of_clubs.svg">
+            <img class="playing-card" id="diamonds2" src="img/2_of_diamonds.svg">
+            <img class="playing-card" id="diamonds3" src="img/3_of_diamonds.svg">
+            <img class="playing-card" id="diamonds4" src="img/4_of_diamonds.svg">
+            <img class="playing-card" id="diamonds5" src="img/5_of_diamonds.svg">
+            <img class="playing-card" id="diamonds6" src="img/6_of_diamonds.svg">
+            <img class="playing-card" id="diamonds7" src="img/7_of_diamonds.svg">
+            <img class="playing-card" id="diamonds8" src="img/8_of_diamonds.svg">
+            <img class="playing-card" id="diamonds9" src="img/9_of_diamonds.svg">
+            <img class="playing-card" id="diamonds10" src="img/10_of_diamonds.svg">
+            <img class="playing-card" id="diamondsjack" src="img/jack_of_diamonds.svg">
+            <img class="playing-card" id="diamondsqueen" src="img/queen_of_diamonds.svg">
+            <img class="playing-card" id="diamondsking" src="img/king_of_diamonds.svg">
+            <img class="playing-card" id="diamondsace" src="img/ace_of_diamonds.svg">
+            <img class="playing-card" id="hearts2" src="img/2_of_hearts.svg">
+            <img class="playing-card" id="hearts3" src="img/3_of_hearts.svg">
+            <img class="playing-card" id="hearts4" src="img/4_of_hearts.svg">
+            <img class="playing-card" id="hearts5" src="img/5_of_hearts.svg">
+            <img class="playing-card" id="hearts6" src="img/6_of_hearts.svg">
+            <img class="playing-card" id="hearts7" src="img/7_of_hearts.svg">
+            <img class="playing-card" id="hearts8" src="img/8_of_hearts.svg">
+            <img class="playing-card" id="hearts9" src="img/9_of_hearts.svg">
+            <img class="playing-card" id="hearts10" src="img/10_of_hearts.svg">
+            <img class="playing-card" id="heartsjack" src="img/jack_of_hearts.svg">
+            <img class="playing-card" id="heartsqueen" src="img/queen_of_hearts.svg">
+            <img class="playing-card" id="heartsking" src="img/king_of_hearts.svg">
+            <img class="playing-card" id="heartsace" src="img/ace_of_hearts.svg">
         </div>
-        <div id="fade-right"></div>
+        <div id=fade-right></div>
     </div>
-            <script src="scripts.js"></script>
-        </body>
-        </html>
+    <button id="score-button">Hide Score</button>
+    <script src="scripts.js"></script>
+</body>
+</html>
