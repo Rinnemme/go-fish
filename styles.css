@@ -139,7 +139,6 @@ button:active,
     padding:10px;
     overflow:scroll;
     height:100%;
-    display:none;
 }
 
 #fade-right,

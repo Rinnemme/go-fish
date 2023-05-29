@@ -8,10 +8,10 @@ const deck = [
     {suit: 'spades', rank:8},
     {suit: 'spades', rank:9},
     {suit: 'spades', rank:10},
-    {suit: 'spades', rank:"jack"},
-    {suit: 'spades', rank:"queen"},
-    {suit: 'spades', rank:"king"},
-    {suit: 'spades', rank:"ace"},
+    {suit: 'spades', rank:"j"},
+    {suit: 'spades', rank:"q"},
+    {suit: 'spades', rank:"k"},
+    {suit: 'spades', rank:"a"},
     {suit: 'hearts', rank:2},
     {suit: 'hearts', rank:3},
     {suit: 'hearts', rank:4},
@@ -21,10 +21,10 @@ const deck = [
     {suit: 'hearts', rank:8},
     {suit: 'hearts', rank:9},
     {suit: 'hearts', rank:10},
-    {suit: 'hearts', rank:"jack"},
-    {suit: 'hearts', rank:"queen"},
-    {suit: 'hearts', rank:"king"},
-    {suit: 'hearts', rank:"ace"},
+    {suit: 'hearts', rank:"j"},
+    {suit: 'hearts', rank:"q"},
+    {suit: 'hearts', rank:"k"},
+    {suit: 'hearts', rank:"a"},
     {suit: 'clubs', rank:2},
     {suit: 'clubs', rank:3},
     {suit: 'clubs', rank:4},
@@ -34,10 +34,10 @@ const deck = [
     {suit: 'clubs', rank:8},
     {suit: 'clubs', rank:9},
     {suit: 'clubs', rank:10},
-    {suit: 'clubs', rank:"jack"},
-    {suit: 'clubs', rank:"queen"},
-    {suit: 'clubs', rank:"king"},
-    {suit: 'clubs', rank:"ace"},
+    {suit: 'clubs', rank:"j"},
+    {suit: 'clubs', rank:"q"},
+    {suit: 'clubs', rank:"k"},
+    {suit: 'clubs', rank:"a"},
     {suit: 'diamonds', rank:2},
     {suit: 'diamonds', rank:3},
     {suit: 'diamonds', rank:4},
@@ -47,10 +47,10 @@ const deck = [
     {suit: 'diamonds', rank:8},
     {suit: 'diamonds', rank:9},
     {suit: 'diamonds', rank:10},
-    {suit: 'diamonds', rank:"jack"},
-    {suit: 'diamonds', rank:"queen"},
-    {suit: 'diamonds', rank:"king"},
-    {suit: 'diamonds', rank:"ace"}
+    {suit: 'diamonds', rank:"j"},
+    {suit: 'diamonds', rank:"q"},
+    {suit: 'diamonds', rank:"k"},
+    {suit: 'diamonds', rank:"a"}
 ]
 const message = document.getElementById("message")
 const startButton = document.getElementById("start-button")
@@ -60,13 +60,19 @@ const askForCard = document.getElementById("ask-bot")
 const okStart = document.getElementById("ok-start")
 const turns = ["player","bot"]
 const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
+const cardImages = Array.from(document.querySelectorAll(".playing-card"))
 const goFish = document.getElementById("go-fish")
 const yourTurn = document.getElementById("bot-turn")
 const myTurn = document.getElementById("player-turn")
+const playerScoreBoard = document.getElementById("player-score")
+const botScoreBoard = document.getElementById("bot-score")
+const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k", "a"]
 let currentTurn = ""
 let playerHand = []
 let botHand = []
 let playingDeck = deck;
+let playerScore = 0
+let botScore = 0
 
 function activateRankButtons() {
     rankButtons.forEach(button => {
@@ -82,7 +88,7 @@ function playerDraw() {
         playerHand.unshift(card)
         playingDeck.splice(pickIndex, 1)
         const cardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
-        cardImage.style.display="flex"
+        toggleVisibility(cardImage)
 }
 
 function botDraw() {
@@ -162,14 +168,13 @@ function askBot(askRank) {
             botHand.splice(botHand.indexOf(card), 1)
             playerHand.unshift(takenCard)
             const takenCardImage = document.getElementById(`${takenCard.suit}`+`${takenCard.rank}`)
-            takenCardImage.style.display="flex"
+            toggleVisibility(takenCardImage)
             message.textContent = "Darn, I do! Here you go, you rapscallion..."
             successful="yes"
         }
     })
     rankButtons.forEach(button => {
         if(button.classList.contains("visible")) {
-            console.log(button)
             toggleVisibility(button)
         }
     })
@@ -181,7 +186,7 @@ function askBot(askRank) {
     }
 }
 
-/* Human goes fish */
+/* Player goes fish */
 
 goFish.addEventListener("click", function() {
     playerDraw()
@@ -214,11 +219,10 @@ function botAsk() {
     playerHand.forEach (card => {
         if (card.rank === askRank) {
             const givenCard = playerHand[playerHand.indexOf(card)]
-            console.log(playerHand[playerHand.indexOf(card)])
             playerHand.splice(playerHand.indexOf(card), 1)
             botHand.unshift(givenCard)
             const givenCardImage = document.getElementById(`${givenCard.suit}`+`${givenCard.rank}`)
-            givenCardImage.style.display="none"
+            toggleVisibility(givenCardImage)
             successful = "yes"
             message.textContent = `I'll just go ahead and take any ${askRank}s you have`
         }
@@ -227,4 +231,47 @@ function botAsk() {
         botDraw()
         message.textContent = `I wanted at least ONE ${askRank}, but alas, I had to go fish.`
     }
+}
+
+/* Check point conditions */
+
+function playerPointCheck() {
+    ranks.forEach(rankCheck => {
+        const checkingObject = playerHand.filter(card => card.rank==rankCheck)
+        console.table(checkingObject)
+        if (checkingObject.length === 4) {
+            for (let i=0;i<playerHand.length;i++) {
+                if (playerHand[i].rank===rankCheck) {
+                    playerHand.splice(i,1)
+                }
+            }
+            cardImages.forEach(image => {
+                console.log(image)
+                if (image.id.slice(-1)==rankCheck && image.classList.contains("visible")) {
+                    toggleVisibility(image)
+                }
+            })
+            playerScore+=1
+        }
+    })
+}
+
+function botPointCheck() {
+    ranks.forEach(rankCheck => {
+        const checkingObject = botHand.filter(card => card.rank==rankCheck)
+        console.table(checkingObject)
+        if (checkingObject.length === 4) {
+            playerScore+=1
+            for (let i=0;i<botHand.length;i++) {
+                if (botHand[i].rank===rankCheck) {
+                    botHand.splice(i,1)
+                }
+            }
+            for (let i=0;i<botHand.length;i++) {
+                if (botHand[i].rank===rankCheck) {
+                    botHand.splice(i,1)
+                }
+            }
+        }
+    })
 }
