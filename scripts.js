@@ -55,6 +55,7 @@ const deck = [
 
 let playerHand = []
 let botHand = []
+let turn = "human"
 
 let playingDeck = deck;
 
@@ -65,29 +66,48 @@ function humanDraw() {
         playingDeck.splice(pickIndex, 1)
         const cardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
         cardImage.style.display="flex"
-        
 }
 
 function botDraw() {
     const pickIndex = Math.floor((Math.random()*playingDeck.length))
-        const card = playingDeck[pickIndex]
-        botHand.unshift(card)
-        playingDeck.splice(pickIndex, 1) 
+    const card = playingDeck[pickIndex]
+    botHand.unshift(card)
+    playingDeck.splice(pickIndex, 1) 
 }
 
 function dealHands() {
-    for(let i=1;i<8;i++) {humanDraw()}
-    for(let i=1;i<8;i++) {botDraw()}
+    for(let i=1;i<6;i++) {humanDraw()}
+    for(let i=1;i<6;i++) {botDraw()}
 }
+
+/* Ask bot for a card rank, bot loses, you get, cards appear */
 
 function askBot(askRank) {
     botHand.forEach (card => {
         if (card.rank === askRank) {
-            console.log(botHand.indexOf(card))
             const takenCard = botHand[botHand.indexOf(card)]
-            console.log(takenCard)
             botHand.splice(botHand.indexOf(card), 1)
             playerHand.unshift(takenCard)
+            const takenCardImage = document.getElementById(`${takenCard.suit}`+`${takenCard.rank}`)
+            takenCardImage.style.display="flex"
+        }
+    })
+}
+
+/* Bot asks for a card, gets them, all relevant cards disappear from your hand */
+
+function botAsk() {
+    const askIndex = Math.floor((Math.random()*botHand.length))
+    const askRank = botHand[askIndex].rank
+    console.log("ask rank is " + askRank)
+    playerHand.forEach (card => {
+        if (card.rank === askRank) {
+            const givenCard = playerHand[playerHand.indexOf(card)]
+            console.log(playerHand[playerHand.indexOf(card)])
+            playerHand.splice(playerHand.indexOf(card), 1)
+            botHand.unshift(givenCard)
+            const givenCardImage = document.getElementById(`${givenCard.suit}`+`${givenCard.rank}`)
+            givenCardImage.style.display="none"
         }
     })
 }
