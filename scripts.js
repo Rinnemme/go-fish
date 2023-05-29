@@ -67,6 +67,9 @@ const myTurn = document.getElementById("player-turn")
 const playerScoreBoard = document.getElementById("player-score")
 const botScoreBoard = document.getElementById("bot-score")
 const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k", "a"]
+const modalOk = document.getElementById("modal-button")
+const modalWindow = document.getElementById("modal")
+const modalMessage = document.getElementById("modal-text")
 let currentTurn = ""
 let playerHand = []
 let botHand = []
@@ -252,6 +255,21 @@ function playerPointCheck() {
                 }
             })
             playerScore+=1
+            playerScoreBoard.textContent=playerScore
+            if (isNaN(rankCheck)) {
+                if (rankCheck==="j") {
+                    modalMessage.textContent="Wow, you've gathered all the jacks! As such, they'll be taken out of your hand and your score will be increased by 1."
+                } else if (rankCheck==="q") {
+                    modalMessage.textContent="Wow, you've gathered all the queens! As such, they'll be taken out of your hand and your score will be increased by 1."
+                } else if (rankCheck==="k") {
+                    modalMessage.textContent="Wow, you've gathered all the kings! As such, they'll be taken out of your hand and your score will be increased by 1."
+                } else {
+                    modalMessage.textContent="Wow, you've gathered all the aces! As such, they'll be taken out of your hand and your score will be increased by 1."
+                }
+            } else {
+                modalMessage.textContent=`Wow, you've gathered all the ${rankCheck}'s! As such, they'll be taken out of your hand and your score will be increased by 1.`
+            }
+            toggleVisibility(modalWindow)
         }
     })
 }
@@ -261,17 +279,29 @@ function botPointCheck() {
         const checkingObject = botHand.filter(card => card.rank==rankCheck)
         console.table(checkingObject)
         if (checkingObject.length === 4) {
-            playerScore+=1
             for (let i=0;i<botHand.length;i++) {
                 if (botHand[i].rank===rankCheck) {
                     botHand.splice(i,1)
                 }
             }
-            for (let i=0;i<botHand.length;i++) {
-                if (botHand[i].rank===rankCheck) {
-                    botHand.splice(i,1)
+            botScore+=1
+            botScoreBoard.textContent=botScore
+            if (isNaN(rankCheck)) {
+                if (rankCheck==="j") {
+                    modalMessage.textContent="I've gathered all the jacks! As such, they'll be taken out of my hand and my score will be increased by 1."
+                } else if (rankCheck==="q") {
+                    modalMessage.textContent="I've gathered all the queens! As such, they'll be taken out of my hand and my score will be increased by 1."
+                } else if (rankCheck==="k") {
+                    modalMessage.textContent="I've gathered all the kings! As such, they'll be taken out of my hand and my score will be increased by 1."
+                } else {
+                    modalMessage.textContent="I've gathered all the aces! As such, they'll be taken out of my hand and my score will be increased by 1."
                 }
+            } else {
+                modalMessage.textContent=`I've gathered all the ${rankCheck}'s! As such, they'll be taken out of my hand and my score will be increased by 1.`
             }
+            toggleVisibility(modalWindow)
         }
     })
 }
+
+modalOk.addEventListener("click", function() {toggleVisibility(modalWindow)})
