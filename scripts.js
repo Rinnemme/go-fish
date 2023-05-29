@@ -135,9 +135,21 @@ okStart.addEventListener("click", function() {
 
 /* Ask bot for a card rank, bot loses, you get, cards appear */
 
+askForCard.addEventListener ("click", function() {
+    toggleVisibility(askForCard)
+    rankButtons.forEach(button => {
+        playerHand.forEach(card => {
+            const checkRank = button.id.slice(4)
+            if(checkRank==card.rank && !button.classList.contains("visible")) {
+            toggleVisibility(button)
+            } 
+        })
+    })
+})
+
 function askBot(askRank) {
     botHand.forEach (card => {
-        if (card.rank === askRank) {
+        if (card.rank == askRank) {
             const takenCard = botHand[botHand.indexOf(card)]
             botHand.splice(botHand.indexOf(card), 1)
             playerHand.unshift(takenCard)
