@@ -57,6 +57,7 @@ const startButton = document.getElementById("start-button")
 const scoreBoard = document.getElementById("score")
 const scoreHider = document.getElementById("score-button")
 const askForCard = document.getElementById("ask-bot")
+const okStart = document.getElementById("ok-start")
 const turns = ["player","bot"]
 let currentTurn = ""
 
@@ -98,16 +99,27 @@ function pickTurn() {
 }
 
 startButton.addEventListener("click", function() {
-    dealHands()
+    pickTurn()
     toggleVisibility(startButton)
+    toggleVisibility(okStart)
+    if (currentTurn==="bot") {
+        message.textContent = "Looks like I'm up first!"
+    }
+    if (currentTurn==="player") {
+        message.textContent = "Looks like you're up first!"
+    }
+})
+
+okStart.addEventListener("click", function() {
+    dealHands()
     toggleVisibility(scoreBoard)
     toggleVisibility(scoreHider)
-    pickTurn()
+    toggleVisibility(okStart)
     if (currentTurn==="bot") {
         botAsk()
     }
     if (currentTurn==="player") {
-        message.textContent = "You're up - ask me for a card rank you've got!"
+        message.textContent = "Ask me for a card rank you've got!"
         toggleVisibility(askForCard)
     }
 })
@@ -127,7 +139,7 @@ function askBot(askRank) {
 }
 
 askForCard.addEventListener("click", function() {
-    
+
 })
 
 /* Bot asks for a card, gets them, all relevant cards disappear from your hand */
