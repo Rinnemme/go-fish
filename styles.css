@@ -149,7 +149,7 @@ button:active,
     /* A few marked scrollbar-hiding techniques I did not know for. 
     various browsers; I normally avoid using anything I don't understand 
     well yet, but I just couldn't bear to look at that scroll bar */
-    -ms-overflow-style: none;/* * */
+    /* -ms-overflow-style: none; *//* * */
     align-items:center;
     display:flex;
     flex-direction:column;
@@ -158,13 +158,13 @@ button:active,
     justify-content:center;
     overflow:scroll;
     padding-left:20px;
-    scrollbar-width: none; /* * */
+    /* scrollbar-width: none; */ /* * */
     width:100%;
 }
 
-#hand-container::-webkit-scrollbar { /* * */
+/* #hand-container::-webkit-scrollbar {
     display: none;
-}
+} */
 
 .playing-card {
     box-sizing:border-box;
