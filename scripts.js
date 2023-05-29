@@ -55,11 +55,11 @@ const deck = [
 
 let playerHand = []
 let botHand = []
-let turn = "human"
+let turn = "player"
 
 let playingDeck = deck;
 
-function humanDraw() {
+function playerDraw() {
     const pickIndex = Math.floor((Math.random()*playingDeck.length))
         const card = playingDeck[pickIndex]
         playerHand.unshift(card)
@@ -76,7 +76,7 @@ function botDraw() {
 }
 
 function dealHands() {
-    for(let i=1;i<6;i++) {humanDraw()}
+    for(let i=1;i<6;i++) {playerDraw()}
     for(let i=1;i<6;i++) {botDraw()}
 }
 
