@@ -59,12 +59,20 @@ const scoreHider = document.getElementById("score-button")
 const askForCard = document.getElementById("ask-bot")
 const okStart = document.getElementById("ok-start")
 const turns = ["player","bot"]
+const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
 let currentTurn = ""
-
 let playerHand = []
 let botHand = []
 
 let playingDeck = deck;
+
+function activateRankButtons() {
+    rankButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            askBot(button.id.slice(4))
+        })
+    })
+}
 
 function playerDraw() {
     const pickIndex = Math.floor((Math.random()*playingDeck.length))
@@ -112,6 +120,7 @@ startButton.addEventListener("click", function() {
 
 okStart.addEventListener("click", function() {
     dealHands()
+    activateRankButtons()
     toggleVisibility(scoreBoard)
     toggleVisibility(scoreHider)
     toggleVisibility(okStart)
