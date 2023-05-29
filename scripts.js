@@ -62,6 +62,7 @@ const turns = ["player","bot"]
 const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
 const goFish = document.getElementById("go-fish")
 const yourTurn = document.getElementById("bot-turn")
+const myTurn = document.getElementById("player-turn")
 let currentTurn = ""
 let playerHand = []
 let botHand = []
@@ -107,6 +108,11 @@ function pickTurn() {
     currentTurn = turns[Math.floor(Math.random()*2)]
 }
 
+function playerTurn() {
+    message.textContent = "Ask me for a card rank you've got!"
+    toggleVisibility(askForCard)
+}
+
 startButton.addEventListener("click", function() {
     pickTurn()
     toggleVisibility(startButton)
@@ -129,8 +135,7 @@ okStart.addEventListener("click", function() {
         botAsk()
     }
     if (currentTurn==="player") {
-        message.textContent = "Ask me for a card rank you've got!"
-        toggleVisibility(askForCard)
+        playerTurn()
     }
 })
 
@@ -175,6 +180,30 @@ function askBot(askRank) {
     }
 }
 
+/* Human goes fish */
+
+goFish.addEventListener("click", function() {
+    playerDraw()
+    message.textContent = "Enjoy that new card!"
+    toggleVisibility(goFish)
+    toggleVisibility(yourTurn)
+})
+
+/* Make it bot's turn */
+
+yourTurn.addEventListener("click", function() {
+    botAsk()
+    toggleVisibility(yourTurn)
+    toggleVisibility(myTurn)
+})
+
+/* Make it player's turn */
+
+myTurn.addEventListener("click", function() {
+    playerTurn()
+    toggleVisibility(myTurn)
+})
+
 /* Bot asks for a card, gets them, all relevant cards disappear from your hand */
 
 function botAsk() {
@@ -190,7 +219,7 @@ function botAsk() {
             const givenCardImage = document.getElementById(`${givenCard.suit}`+`${givenCard.rank}`)
             givenCardImage.style.display="none"
             successful = "yes"
-            message.textContent = `I'll just go ahead and take any ${askRank} cards you have`
+            message.textContent = `I'll just go ahead and take any ${askRank}s you have`
         }
     })
     if (successful === "no") {
