@@ -76,6 +76,7 @@ let botHand = []
 let playingDeck = deck;
 let playerScore = 0
 let botScore = 0
+let game = "on"
 
 function activateRankButtons() {
     rankButtons.forEach(button => {
@@ -165,10 +166,13 @@ askForCard.addEventListener ("click", function() {
 
 function askBot(askRank) {
     let successful = "no"
+    /* looping to bully this into functioning properly */
+    for(let i=0;i<10;i++) {
     botHand.forEach (card => {
         if (card.rank == askRank) {
-            const takenCard = botHand[botHand.indexOf(card)]
-            botHand.splice(botHand.indexOf(card), 1)
+            const index = botHand.indexOf(card)
+            const takenCard = botHand[index]
+            botHand.splice(index, 1)
             playerHand.unshift(takenCard)
             const takenCardImage = document.getElementById(`${takenCard.suit}`+`${takenCard.rank}`)
             toggleVisibility(takenCardImage)
@@ -176,7 +180,7 @@ function askBot(askRank) {
             successful="yes"
             playerPointCheck()
         }
-    })
+    })}
     rankButtons.forEach(button => {
         if(button.classList.contains("visible")) {
             toggleVisibility(button)
@@ -224,29 +228,34 @@ function botAsk() {
     const askIndex = Math.floor((Math.random()*botHand.length))
     const askRank = botHand[askIndex].rank
     let successful = "no"
+    /* looping to bully this into functioning properly */
+    for(let i=0;i<10;i++) {
     playerHand.forEach (card => {
         if (card.rank === askRank) {
-            const givenCard = playerHand[playerHand.indexOf(card)]
-            playerHand.splice(playerHand.indexOf(card), 1)
+            const index = playerHand.indexOf(card)
+            const givenCard = playerHand[index]
+            playerHand.splice(index, 1)
             botHand.unshift(givenCard)
             const givenCardImage = document.getElementById(`${givenCard.suit}`+`${givenCard.rank}`)
             toggleVisibility(givenCardImage)
             successful = "yes"
-            if (isNaN(askRank)) {
-                if (askRank==="j") {
-                    message.textContent = `I'll just go ahead and take any jacks you have.`
-                } else if (askRank==="q") {
-                    message.textContent = `I'll just go ahead and take any queens you have.`
-                } else if (askRank==="k") {
-                    message.textContent = `I'll just go ahead and take any kings you have.`
-                } else if (askRank==="a") {
-                    message.textContent = `I'll just go ahead and take any aces you have.`
-                } 
-            } else {
-                message.textContent = `I'll just go ahead and take any ${askRank}'s you have.`
-            }
         }
-    })
+    })}
+    if (successful === "yes") {
+        if (isNaN(askRank)) {
+            if (askRank==="j") {
+                message.textContent = `I'll just go ahead and take any jacks you have.`
+            } else if (askRank==="q") {
+                message.textContent = `I'll just go ahead and take any queens you have.`
+            } else if (askRank==="k") {
+                message.textContent = `I'll just go ahead and take any kings you have.`
+            } else if (askRank==="a") {
+                message.textContent = `I'll just go ahead and take any aces you have.`
+            } 
+        } else {
+            message.textContent = `I'll just go ahead and take any ${askRank}'s you have.`
+        }
+    }
     if (successful === "no") {
         if (playingDeck.length===0) {
             if (isNaN(askRank)) {
@@ -381,14 +390,32 @@ function botPointCheck() {
 }
 
 function gameCheck() {
-    if (botScore+humanScore===13) {
-        if (botScore>humanScore) {
-            modalMessage.textContent=`And that's game!<br>Looks like I won with ${botScore} sets of four to your ${humanScore}. Better luck next time!`
+    if (botScore+playerScore===13) {
+        game = "done"
+        if (botScore>playerScore) {
+            modalMessage.textContent=`And that's game!<br>Looks like I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
         } else {
-            modalMessage.textContent=`And that's game!<br>Looks like you won with ${humanScore} sets of four to my ${botScore} - congratulations!`
+            modalMessage.textContent=`And that's game!<br>Looks like you won with ${playerScore} sets of four to my ${botScore} - congratulations!`
         }
         toggleVisibility(modal)
+        toggleVisibility(modalOk)
     }
 }
+
+/* for later, perhaps
+
+    function resetgame() {
+    playingDeck=deck
+    currentTurn = ""
+    playerHand = []
+    botHand = []
+    playingDeck = deck;
+    playerScore = 0
+    playerScoreBoard.textContent=0;
+    botScore = 0
+    botScoreBoard.textContent=0;
+    game = "on"
+    dealHands()
+} */
 
 modalOk.addEventListener("click", function() {toggleVisibility(modalWindow)})
