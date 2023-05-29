@@ -52,31 +52,53 @@ const deck = [
     {suit: 'diamonds', rank:"k"},
     {suit: 'diamonds', rank:"a"}
 ]
-const message = document.getElementById("message")
-const startButton = document.getElementById("start-button")
-const scoreBoard = document.getElementById("score")
-const scoreHider = document.getElementById("score-button")
 const askForCard = document.getElementById("ask-bot")
-const okStart = document.getElementById("ok-start")
-const turns = ["player","bot"]
-const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
+const botScoreBoard = document.getElementById("bot-score")
 const cardImages = Array.from(document.querySelectorAll(".playing-card"))
 const goFish = document.getElementById("go-fish")
-const yourTurn = document.getElementById("bot-turn")
-const myTurn = document.getElementById("player-turn")
-const playerScoreBoard = document.getElementById("player-score")
-const botScoreBoard = document.getElementById("bot-score")
-const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k", "a"]
+const message = document.getElementById("message")
 const modalOk = document.getElementById("modal-button")
 const modalWindow = document.getElementById("modal")
 const modalMessage = document.getElementById("modal-text")
-let currentTurn = ""
-let playerHand = []
+const myTurn = document.getElementById("player-turn")
+const okStart = document.getElementById("ok-start")
+const playerScoreBoard = document.getElementById("player-score")
+const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
+const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k", "a"]
+const scoreBoard = document.getElementById("score")
+const startButton = document.getElementById("start-button")
+const scoreHider = document.getElementById("score-button")
+const turns = ["player","bot"]
+const yourTurn = document.getElementById("bot-turn")
+
 let botHand = []
-let playingDeck = deck;
-let playerScore = 0
 let botScore = 0
-let game = "on"
+let currentTurn = ""
+let game = "on" /* May be used later for replay function */
+let playerHand = []
+let playerScore = 0
+let playingDeck = deck;
+
+
+/* Hides and unhides elements by toggling two classes simultaneously */
+
+function toggleVisibility(element) {
+    element.classList.toggle("visible")
+    element.classList.toggle("invisible")
+}
+
+/* Toggles scoreboard */
+
+scoreHider.addEventListener("click", function() {
+    toggleVisibility(scoreBoard)
+    if(scoreBoard.classList.contains("invisible")) {
+        scoreHider.textContent="Show Score"
+    } else {
+        scoreHider.textContent="Hide Score"
+    }
+})
+
+/* Enables player asking bot for specific cards using buttons */
 
 function activateRankButtons() {
     rankButtons.forEach(button => {
@@ -85,6 +107,84 @@ function activateRankButtons() {
         })
     })
 }
+
+/* Deals a hand of 5 to each player */
+
+function dealHands() {
+    for(let i=1;i<6;i++) {playerDraw()}
+    for(let i=1;i<6;i++) {botDraw()}
+}
+
+/* Establishes who gets first turn */
+
+function pickTurn() {
+    currentTurn = turns[Math.floor(Math.random()*2)]
+}
+
+/* Makes it the bot's turn */
+
+yourTurn.addEventListener("click", function() {
+    botAsk()
+})
+
+/* Makes it the player's turn */
+
+function playerTurn() {
+    message.textContent = "Ask me for a card rank you've got!"
+    toggleVisibility(askForCard)
+}
+
+myTurn.addEventListener("click", function() {
+    playerTurn()
+    toggleVisibility(myTurn)
+})
+
+/* Lets the player know, before the action, who is acting first */
+
+startButton.addEventListener("click", function() {
+    pickTurn()
+    toggleVisibility(startButton)
+    toggleVisibility(okStart)
+    if (currentTurn==="bot") {
+        message.textContent = "Looks like I'm up first!"
+    }
+    if (currentTurn==="player") {
+        message.textContent = "Looks like you're up first!"
+    }
+})
+
+/* Actually kicks off the action */
+
+okStart.addEventListener("click", function() {
+    dealHands()
+    activateRankButtons()
+    toggleVisibility(scoreBoard)
+    toggleVisibility(scoreHider)
+    toggleVisibility(okStart)
+    if (currentTurn==="bot") {
+        toggleVisibility(yourTurn)
+        botAsk()
+    }
+    if (currentTurn==="player") {
+        playerTurn()
+    }
+})
+
+/* Displays list of ranks you can ask for */
+
+askForCard.addEventListener ("click", function() {
+    toggleVisibility(askForCard)
+    rankButtons.forEach(button => {
+        playerHand.forEach(card => {
+            const checkRank = button.id.slice(4)
+            if(checkRank==card.rank && !button.classList.contains("visible")) {
+            toggleVisibility(button)
+            } 
+        })
+    })
+})
+
+/* Draws random cards into player's/bot's hands */
 
 function playerDraw() {
     const pickIndex = Math.floor((Math.random()*playingDeck.length))
@@ -102,67 +202,7 @@ function botDraw() {
     playingDeck.splice(pickIndex, 1) 
 }
 
-function toggleVisibility(element) {
-    element.classList.toggle("visible")
-    element.classList.toggle("invisible")
-}
-
-/* Kick off the game */
-
-function dealHands() {
-    for(let i=1;i<6;i++) {playerDraw()}
-    for(let i=1;i<6;i++) {botDraw()}
-}
-
-function pickTurn() {
-    currentTurn = turns[Math.floor(Math.random()*2)]
-}
-
-function playerTurn() {
-    message.textContent = "Ask me for a card rank you've got!"
-    toggleVisibility(askForCard)
-}
-
-startButton.addEventListener("click", function() {
-    pickTurn()
-    toggleVisibility(startButton)
-    toggleVisibility(okStart)
-    if (currentTurn==="bot") {
-        message.textContent = "Looks like I'm up first!"
-    }
-    if (currentTurn==="player") {
-        message.textContent = "Looks like you're up first!"
-    }
-})
-
-okStart.addEventListener("click", function() {
-    dealHands()
-    activateRankButtons()
-    toggleVisibility(scoreBoard)
-    toggleVisibility(scoreHider)
-    toggleVisibility(okStart)
-    if (currentTurn==="bot") {
-        toggleVisibility(yourTurn)
-        botAsk()
-    }
-    if (currentTurn==="player") {
-        playerTurn()
-    }
-})
-
-/* Ask bot for a card rank, bot loses, you get, cards appear */
-
-askForCard.addEventListener ("click", function() {
-    toggleVisibility(askForCard)
-    rankButtons.forEach(button => {
-        playerHand.forEach(card => {
-            const checkRank = button.id.slice(4)
-            if(checkRank==card.rank && !button.classList.contains("visible")) {
-            toggleVisibility(button)
-            } 
-        })
-    })
-})
+/* Asks the bot for a card */
 
 function askBot(askRank) {
     let successful = "no"
@@ -199,7 +239,7 @@ function askBot(askRank) {
     }
 }
 
-/* Player goes fish */
+/* Fishes for the player*/
 
 goFish.addEventListener("click", function() {
     playerDraw()
@@ -209,20 +249,7 @@ goFish.addEventListener("click", function() {
     playerPointCheck()
 })
 
-/* Make it bot's turn */
-
-yourTurn.addEventListener("click", function() {
-    botAsk()
-})
-
-/* Make it player's turn */
-
-myTurn.addEventListener("click", function() {
-    playerTurn()
-    toggleVisibility(myTurn)
-})
-
-/* Bot asks for a card, gets them, all relevant cards disappear from play, */
+/* Has bot ask for a card and tell you how it went */
 
 function botAsk() {
     const askIndex = Math.floor((Math.random()*botHand.length))
@@ -296,7 +323,7 @@ function botAsk() {
     botPointCheck()
 }
 
-/* Check point conditions */
+/* Checks point conditions for player */
 
 function playerPointModal(rank) {
     if (isNaN(rank)) {
@@ -346,6 +373,9 @@ function playerPointCheck() {
     })
 }
 
+
+/* Checks point conditions for bot */
+
 function botPointModal(rank) {
     if (isNaN(rank)) {
         if (rank==="j") {
@@ -389,6 +419,12 @@ function botPointCheck() {
     })
 }
 
+/* Allows deactivating modal once it pops up and you've read its message (generally following a point) */
+
+modalOk.addEventListener("click", function() {toggleVisibility(modalWindow)})
+
+/* Checks if the game is over */
+
 function gameCheck() {
     if (botScore+playerScore===13) {
         game = "done"
@@ -417,5 +453,3 @@ function gameCheck() {
     game = "on"
     dealHands()
 } */
-
-modalOk.addEventListener("click", function() {toggleVisibility(modalWindow)})
