@@ -7,30 +7,31 @@
     <title>Go Fish</title>
 </head>
 <body>
-    <div id="score">
+    <div id="score" class="invisible">
         <div class="score-label">Human</div>
         <div id="player-score">0</div>
         <div class="score-label">Bot</div>
         <div id="bot-score">0</div>
     </div>
     <img id="header-image" src="img/heading.png">
-    <div id="message">this is an example message!</div>
+    <div id="message">Let's play some Go Fish!</div>
     <div id="button-container">
-        <button class="game-button" id="go-fish">Go fish!</button>
-        <button class="game-button" id="ask-bot">Do you have any...</button>
-        <button class="game-button" id="rank2">Twos?</button>
-        <button class="game-button" id="rank3">Threes?</button>
-        <button class="game-button" id="rank4">Fours?</button>
-        <button class="game-button" id="rank5">Fives?</button>
-        <button class="game-button" id="rank6">Sixes?</button>
-        <button class="game-button" id="rank7">Sevens?</button>
-        <button class="game-button" id="rank8">Eights?</button>
-        <button class="game-button" id="rank9">Nines?</button>
-        <button class="game-button" id="rank10">Tens?</button>
-        <button class="game-button" id="rankjack">Jacks?</button>
-        <button class="game-button" id="rankqueen">Queens?</button>
-        <button class="game-button" id="rankking">Kings?</button>
-        <button class="game-button" id="rankace">Queens?</button>
+        <button class="visible" id="start-button">Start</button>
+        <button class="invisible" id="go-fish">Go fish!</button>
+        <button class="invisible" id="ask-bot">Do you have any...</button>
+        <button class="invisible" id="rank2">Twos?</button>
+        <button class="invisible" id="rank3">Threes?</button>
+        <button class="invisible" id="rank4">Fours?</button>
+        <button class="invisible" id="rank5">Fives?</button>
+        <button class="invisible" id="rank6">Sixes?</button>
+        <button class="invisible" id="rank7">Sevens?</button>
+        <button class="invisible" id="rank8">Eights?</button>
+        <button class="invisible" id="rank9">Nines?</button>
+        <button class="invisible" id="rank10">Tens?</button>
+        <button class="invisible" id="rankjack">Jacks?</button>
+        <button class="invisible" id="rankqueen">Queens?</button>
+        <button class="invisible" id="rankking">Kings?</button>
+        <button class="invisible" id="rankace">Queens?</button>
     </div>
     <div id="hand-and-fade">
         <div id="fade-left"></div>
@@ -90,7 +91,7 @@
         </div>
         <div id=fade-right></div>
     </div>
-    <button id="score-button">Hide Score</button>
+    <button class="invisible" id="score-button">Hide Score</button>
     <script src="scripts.js"></script>
 </body>
 </html>

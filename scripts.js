@@ -52,10 +52,16 @@ const deck = [
     {suit: 'diamonds', rank:"king"},
     {suit: 'diamonds', rank:"ace"}
 ]
+const message = document.getElementById("message")
+const startButton = document.getElementById("start-button")
+const scoreBoard = document.getElementById("score")
+const scoreHider = document.getElementById("score-button")
+const askForCard = document.getElementById("ask-bot")
+const turns = ["player","bot"]
+let currentTurn = ""
 
 let playerHand = []
 let botHand = []
-let turn = "player"
 
 let playingDeck = deck;
 
@@ -75,10 +81,36 @@ function botDraw() {
     playingDeck.splice(pickIndex, 1) 
 }
 
+function toggleVisibility(element) {
+    element.classList.toggle("visible")
+    element.classList.toggle("invisible")
+}
+
+/* Kick off the game */
+
 function dealHands() {
     for(let i=1;i<6;i++) {playerDraw()}
     for(let i=1;i<6;i++) {botDraw()}
 }
+
+function pickTurn() {
+    currentTurn = turns[Math.floor(Math.random()*2)]
+}
+
+startButton.addEventListener("click", function() {
+    dealHands()
+    toggleVisibility(startButton)
+    toggleVisibility(scoreBoard)
+    toggleVisibility(scoreHider)
+    pickTurn()
+    if (currentTurn==="bot") {
+        botAsk()
+    }
+    if (currentTurn==="player") {
+        message.textContent = "You're up - ask me for a card rank you've got!"
+        toggleVisibility(askForCard)
+    }
+})
 
 /* Ask bot for a card rank, bot loses, you get, cards appear */
 
@@ -94,12 +126,16 @@ function askBot(askRank) {
     })
 }
 
+askForCard.addEventListener("click", function() {
+    
+})
+
 /* Bot asks for a card, gets them, all relevant cards disappear from your hand */
 
 function botAsk() {
     const askIndex = Math.floor((Math.random()*botHand.length))
     const askRank = botHand[askIndex].rank
-    console.log("ask rank is " + askRank)
+    let successful = "no"
     playerHand.forEach (card => {
         if (card.rank === askRank) {
             const givenCard = playerHand[playerHand.indexOf(card)]
@@ -108,10 +144,11 @@ function botAsk() {
             botHand.unshift(givenCard)
             const givenCardImage = document.getElementById(`${givenCard.suit}`+`${givenCard.rank}`)
             givenCardImage.style.display="none"
+            successful = "yes"
+            message.textContent = `I'll just go ahead and take any ${askRank} cards you have`
         }
     })
+    if (successful === "no") {
+        message.textContent = `I wanted at least ONE ${askRank}, but alas, I had to go fish.`
+    }
 }
-
-
-
-dealHands()
