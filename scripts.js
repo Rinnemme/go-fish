@@ -224,6 +224,7 @@ function botAsk() {
         }
     })
     if (successful === "no") {
+        botDraw()
         message.textContent = `I wanted at least ONE ${askRank}, but alas, I had to go fish.`
     }
 }
