@@ -60,15 +60,16 @@ const askForCard = document.getElementById("ask-bot")
 const okStart = document.getElementById("ok-start")
 const turns = ["player","bot"]
 const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
+const goFish = document.getElementById("go-fish")
+const yourTurn = document.getElementById("bot-turn")
 let currentTurn = ""
 let playerHand = []
 let botHand = []
-
 let playingDeck = deck;
 
 function activateRankButtons() {
     rankButtons.forEach(button => {
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function() {
             askBot(button.id.slice(4))
         })
     })
@@ -148,6 +149,7 @@ askForCard.addEventListener ("click", function() {
 })
 
 function askBot(askRank) {
+    let successful = "no"
     botHand.forEach (card => {
         if (card.rank == askRank) {
             const takenCard = botHand[botHand.indexOf(card)]
@@ -155,13 +157,23 @@ function askBot(askRank) {
             playerHand.unshift(takenCard)
             const takenCardImage = document.getElementById(`${takenCard.suit}`+`${takenCard.rank}`)
             takenCardImage.style.display="flex"
+            message.textContent = "Darn, I do! Here you go, you rapscallion..."
+            successful="yes"
         }
     })
+    rankButtons.forEach(button => {
+        if(button.classList.contains("visible")) {
+            console.log(button)
+            toggleVisibility(button)
+        }
+    })
+    if (successful==="no") {
+        message.textContent = "Nope! Looks like you gotta go fish."
+        toggleVisibility(goFish)
+    } else {
+        toggleVisibility(yourTurn)
+    }
 }
-
-askForCard.addEventListener("click", function() {
-
-})
 
 /* Bot asks for a card, gets them, all relevant cards disappear from your hand */
 
