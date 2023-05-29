@@ -55,19 +55,26 @@ const deck = [
 
 let playerHand = []
 let botHand = []
-let availableCards = 52
 
 let playingDeck = deck;
 
-function dealHands() {
-    for(let i=1;i<6;i++) {
-        const pick = Math.floor((Math.random()*availableCards))
-        console.log(pick)
-        const card = deck[pick]
-        console.log(card)
+function humanDraw() {
+    const pickIndex = Math.floor((Math.random()*playingDeck.length))
+        const card = playingDeck[pickIndex]
         playerHand.unshift(card)
-        availableCards=availableCards-1
-    }
+        playingDeck.splice(pickIndex, 1)
+}
+
+function botDraw() {
+    const pickIndex = Math.floor((Math.random()*playingDeck.length))
+        const card = playingDeck[pickIndex]
+        botHand.unshift(card)
+        playingDeck.splice(pickIndex, 1) 
+}
+
+function dealHands() {
+    for(let i=1;i<8;i++) {humanDraw()}
+    for(let i=1;i<8;i++) {botDraw()}
 }
 
 dealHands()
