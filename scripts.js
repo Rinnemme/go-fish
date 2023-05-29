@@ -141,8 +141,8 @@ okStart.addEventListener("click", function() {
     toggleVisibility(scoreHider)
     toggleVisibility(okStart)
     if (currentTurn==="bot") {
+        toggleVisibility(yourTurn)
         botAsk()
-        toggleVisibility(myTurn)
     }
     if (currentTurn==="player") {
         playerTurn()
@@ -183,6 +183,11 @@ function askBot(askRank) {
         }
     })
     if (successful==="no") {
+        if (playingDeck.length===0) {
+            message.textContent = "Nope, and the deck's all gone! Guess it's my turn."
+            toggleVisibility(yourTurn)
+            return;
+        }
         message.textContent = "Nope! Looks like you gotta go fish."
         toggleVisibility(goFish)
     } else {
@@ -204,8 +209,6 @@ goFish.addEventListener("click", function() {
 
 yourTurn.addEventListener("click", function() {
     botAsk()
-    toggleVisibility(yourTurn)
-    toggleVisibility(myTurn)
 })
 
 /* Make it player's turn */
@@ -215,7 +218,7 @@ myTurn.addEventListener("click", function() {
     toggleVisibility(myTurn)
 })
 
-/* Bot asks for a card, gets them, all relevant cards disappear from your hand */
+/* Bot asks for a card, gets them, all relevant cards disappear from play, */
 
 function botAsk() {
     const askIndex = Math.floor((Math.random()*botHand.length))
@@ -230,13 +233,13 @@ function botAsk() {
             toggleVisibility(givenCardImage)
             successful = "yes"
             if (isNaN(askRank)) {
-                if (askRank===j) {
+                if (askRank==="j") {
                     message.textContent = `I'll just go ahead and take any jacks you have.`
-                } else if (askRank===q) {
+                } else if (askRank==="q") {
                     message.textContent = `I'll just go ahead and take any queens you have.`
-                } else if (askRank===k) {
+                } else if (askRank==="k") {
                     message.textContent = `I'll just go ahead and take any kings you have.`
-                } else if (askRank===a) {
+                } else if (askRank==="a") {
                     message.textContent = `I'll just go ahead and take any aces you have.`
                 } 
             } else {
@@ -245,15 +248,33 @@ function botAsk() {
         }
     })
     if (successful === "no") {
+        if (playingDeck.length===0) {
+            if (isNaN(askRank)) {
+                if (askRank==="j") {
+                    message.textContent = `You have no jacks, and the deck is empty. Back to you!`
+                } else if (askRank==="q") {
+                    message.textContent = `You have no queens, and the deck is empty. Back to you!`
+                } else if (askRank==="k") {
+                    message.textContent = `You have no kings, and the deck is empty. Back to you!`
+                } else if (askRank==="a") {
+                    message.textContent = `You have no aces, and the deck is empty. Back to you!`
+                } 
+            } else {
+                message.textContent = `You have no ${askRank}'s, and the deck is empty. Back to you!`
+            }
+            toggleVisibility(yourTurn)
+            toggleVisibility(myTurn)
+            return;
+        }
         botDraw()
         if (isNaN(askRank)) {
-            if (askRank===j) {
+            if (askRank==="j") {
                 message.textContent = `I wanted at least ONE jack, but alas, I had to go fish.`
-            } else if (askRank===q) {
+            } else if (askRank==="q") {
                 message.textContent = `I wanted at least ONE queen, but alas, I had to go fish.`
-            } else if (askRank===k) {
+            } else if (askRank==="k") {
                 message.textContent = `I wanted at least ONE king, but alas, I had to go fish.`
-            } else if (askRank===a) {
+            } else if (askRank==="a") {
                 message.textContent = `I wanted at least ONE ace, but alas, I had to go fish.`
             } 
         } else {
@@ -261,77 +282,113 @@ function botAsk() {
         }
         
     }
+    toggleVisibility(yourTurn)
+    toggleVisibility(myTurn)
     botPointCheck()
 }
 
 /* Check point conditions */
 
+function playerPointModal(rank) {
+    if (isNaN(rank)) {
+        if (rank==="j") {
+            modalMessage.textContent="Wow, you've gathered all the jacks! They'll be taken out of play, and your score will be increased by 1."
+        } else if (rank==="q") {
+            modalMessage.textContent="Wow, you've gathered all the queens! They'll be taken out of play, and your score will be increased by 1."
+        } else if (rank==="k") {
+            modalMessage.textContent="Wow, you've gathered all the kings! They'll be taken out of play, and your score will be increased by 1."
+        } else {
+            modalMessage.textContent="Wow, you've gathered all the aces! They'll be taken out of play, and your score will be increased by 1."
+        }
+    } else {
+        modalMessage.textContent=`Wow, you've gathered all the ${rank}'s! They'll be taken out of play, and your score will be increased by 1.`
+    }
+    toggleVisibility(modalWindow)
+}
+
+function playerPoint() {
+    playerScore+=1
+    playerScoreBoard.textContent=playerScore
+    message.textContent = "Congrats on your point! Now, where were we?"
+}
+
 function playerPointCheck() {
-    ranks.forEach(rankCheck => {
-        const checkingObject = playerHand.filter(card => card.rank==rankCheck)
-        console.table(checkingObject)
+    ranks.forEach(targetRank => {
+        const checkingObject = playerHand.filter(card => card.rank==targetRank)
         if (checkingObject.length === 4) {
-            for (let i=0;i<playerHand.length;i++) {
-                if (playerHand[i].rank===rankCheck) {
-                    playerHand.splice(i,1)
-                }
-            }
+            gameCheck()
+            /* Iterating 9 times beacuse it won't iterate thoroughly ever */
+            for(let i=0;i<10;i++) {
             cardImages.forEach(image => {
-                console.log(image)
-                if (image.id.slice(-1)==rankCheck && image.classList.contains("visible")) {
+                if (image.id.slice(-1)==targetRank && image.classList.contains("visible")) {
                     toggleVisibility(image)
                 }
             })
-            playerScore+=1
-            playerScoreBoard.textContent=playerScore
-            if (isNaN(rankCheck)) {
-                if (rankCheck==="j") {
-                    modalMessage.textContent="Wow, you've gathered all the jacks! They'll be taken out of your hand and your score will be increased by 1."
-                } else if (rankCheck==="q") {
-                    modalMessage.textContent="Wow, you've gathered all the queens! They'll be taken out of your hand and your score will be increased by 1."
-                } else if (rankCheck==="k") {
-                    modalMessage.textContent="Wow, you've gathered all the kings! They'll be taken out of your hand and your score will be increased by 1."
-                } else {
-                    modalMessage.textContent="Wow, you've gathered all the aces! They'll be taken out of your hand and your score will be increased by 1."
+            playerHand.forEach(item => {
+                if (item.rank==targetRank) {
+                    const index = playerHand.indexOf(item)
+                    playerHand.splice(index,1)
                 }
-            } else {
-                modalMessage.textContent=`Wow, you've gathered all the ${rankCheck}'s! They'll be taken out of your hand and your score will be increased by 1.`
-            }
-            toggleVisibility(modalWindow)
-            message.textContent = "Congrats on your point! Now, where were we?"
+            })
+        }
+            playerPoint()
+            playerPointModal(targetRank)
         }
     })
 }
 
+function botPointModal(rank) {
+    if (isNaN(rank)) {
+        if (rank==="j") {
+            modalMessage.textContent="I've gathered all the jacks! They'll be taken out of play, and my score will be increased by 1."
+        } else if (rank==="q") {
+            modalMessage.textContent="I've gathered all the queens! They'll be taken out of play, and my score will be increased by 1."
+        } else if (rank==="k") {
+            modalMessage.textContent="I've gathered all the kings! They'll be taken out of play, and my score will be increased by 1."
+        } else {
+            modalMessage.textContent="I've gathered all the aces! They'll be taken out of play, and my score will be increased by 1."
+        }
+    } else {
+        modalMessage.textContent=`I've gathered all the ${rank}'s! They'll be taken out of play, and my score will be increased by 1.`
+    }
+    toggleVisibility(modalWindow)
+}
+
+function botPoint() {
+    botScore+=1
+    botScoreBoard.textContent=botScore
+    message.textContent = "Bet you didn't see that coming! Now, where were we?"
+}
+
 function botPointCheck() {
-    ranks.forEach(rankCheck => {
-        const checkingObject = botHand.filter(card => card.rank==rankCheck)
-        console.table(checkingObject)
+    ranks.forEach(targetRank => {
+        const checkingObject = botHand.filter(card => card.rank==targetRank)
         if (checkingObject.length === 4) {
-            for (let i=0;i<botHand.length;i++) {
-                if (botHand[i].rank===rankCheck) {
-                    botHand.splice(i,1)
+            gameCheck()
+            /* Iterating 9 times beacuse it won't iterate thoroughly ever */
+            for(let i=0;i<10;i++) {
+            botHand.forEach(item => {
+                if (item.rank==targetRank) {
+                    const index = botHand.indexOf(item)
+                    botHand.splice(index,1)
                 }
+            })
             }
-            botScore+=1
-            botScoreBoard.textContent=botScore
-            if (isNaN(rankCheck)) {
-                if (rankCheck==="j") {
-                    modalMessage.textContent="I've gathered all the jacks! They'll be taken out of my hand and my score will be increased by 1."
-                } else if (rankCheck==="q") {
-                    modalMessage.textContent="I've gathered all the queens! They'll be taken out of my hand and my score will be increased by 1."
-                } else if (rankCheck==="k") {
-                    modalMessage.textContent="I've gathered all the kings! They'll be taken out of my hand and my score will be increased by 1."
-                } else {
-                    modalMessage.textContent="I've gathered all the aces! They'll be taken out of my hand and my score will be increased by 1."
-                }
-            } else {
-                modalMessage.textContent=`I've gathered all the ${rankCheck}'s! They'll be taken out of my hand and my score will be increased by 1.`
-            }
-            toggleVisibility(modalWindow)
-            message.textContent = "Bet you didn't see that coming! Now, where were we?"
+            botPoint()
+            botPointModal(targetRank)
         }
     })
+}
+
+function gameCheck() {
+    if (botScore+humanScore===13) {
+        if (botScore>humanScore) {
+            modalMessage.textContent=`And that's game!<br>Looks like I won with ${botScore} sets of four to your ${humanScore}. Better luck next time!`
+        } else {
+            modalMessage.textContent=`And that's game!<br>Looks like you won with ${humanScore} sets of four to my ${botScore} - congratulations!`
+        }
+        toggleVisibility(modal)
+    }
 }
 
 modalOk.addEventListener("click", function() {toggleVisibility(modalWindow)})
