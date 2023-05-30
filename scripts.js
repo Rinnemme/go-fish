@@ -71,6 +71,7 @@ const scoreHider = document.getElementById("score-button")
 const turns = ["player","bot"]
 const yourTurn = document.getElementById("bot-turn")
 
+let convertedRank = ""
 let botHand = []
 let botScore = 0
 let currentTurn = ""
@@ -202,6 +203,49 @@ function botDraw() {
     playingDeck.splice(pickIndex, 1) 
 }
 
+/* Converts names of face cards in instances where rank is displayed in writing */
+
+function rankConvert(targetrank) {
+    if (isNaN(targetrank)) {
+        if (targetrank === "j") {convertedRank = "jack"}
+        else if (targetrank === "q") {convertedRank = "queen"}
+        else if (targetrank === "k") {convertedRank = "king"}
+        else if (targetrank === "a") {convertedRank = "ace"}
+    }
+}
+
+/* Checks for empty hand, draws (up to) 5 cards */
+
+function checkEmptyBotHand() {
+    if (botHand.length===0) {
+        if (playingDeck.length>=5) {
+            for(let i=1;i<=5;i++) {
+                playerDraw()
+            }
+
+        } else {
+            for(let i=1;i<=playingDeck.length;i++) {
+                playerDraw()
+            }
+        }
+    }
+}
+
+function checkEmptyPlayerHand() {
+    if (playerHand.length===0) {
+        if (playingDeck.length>=5) {
+            for(let i=1;i<=5;i++) {
+                botDraw()
+            }
+
+        } else {
+            for(let i=1;i<=playingDeck.length;i++) {
+                botDraw()
+            }
+        }
+    }
+}
+
 /* Asks the bot for a card */
 
 function askBot(askRank) {
@@ -243,7 +287,12 @@ function askBot(askRank) {
 
 goFish.addEventListener("click", function() {
     playerDraw()
-    message.textContent = "Enjoy that new card!"
+    let rankname = playerHand[0].rank
+    console.log(playerHand[0].rank)
+    convertedRank = rankname
+    rankConvert(rankname)
+    console.log(convertedRank)
+    message.textContent = `Enjoy that ${convertedRank} of ${playerHand[0].suit}!`
     toggleVisibility(goFish)
     toggleVisibility(yourTurn)
     playerPointCheck()
@@ -269,53 +318,23 @@ function botAsk() {
         }
     })}
     if (successful === "yes") {
-        if (isNaN(askRank)) {
-            if (askRank==="j") {
-                message.textContent = `I'll just go ahead and take any jacks you have.`
-            } else if (askRank==="q") {
-                message.textContent = `I'll just go ahead and take any queens you have.`
-            } else if (askRank==="k") {
-                message.textContent = `I'll just go ahead and take any kings you have.`
-            } else if (askRank==="a") {
-                message.textContent = `I'll just go ahead and take any aces you have.`
-            } 
-        } else {
-            message.textContent = `I'll just go ahead and take any ${askRank}'s you have.`
-        }
+        convertedRank=askRank
+        rankConvert(askRank)
+        message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
     }
     if (successful === "no") {
         if (playingDeck.length===0) {
-            if (isNaN(askRank)) {
-                if (askRank==="j") {
-                    message.textContent = `You have no jacks, and the deck is empty. Back to you!`
-                } else if (askRank==="q") {
-                    message.textContent = `You have no queens, and the deck is empty. Back to you!`
-                } else if (askRank==="k") {
-                    message.textContent = `You have no kings, and the deck is empty. Back to you!`
-                } else if (askRank==="a") {
-                    message.textContent = `You have no aces, and the deck is empty. Back to you!`
-                } 
-            } else {
-                message.textContent = `You have no ${askRank}'s, and the deck is empty. Back to you!`
-            }
+            convertedRank=askRank
+            rankConvert(askRank)
+            message.textContent = `You have no ${convertedRank}s, and the deck is empty. Back to you!`
             toggleVisibility(yourTurn)
             toggleVisibility(myTurn)
             return;
         }
         botDraw()
-        if (isNaN(askRank)) {
-            if (askRank==="j") {
-                message.textContent = `I wanted at least ONE jack, but alas, I had to go fish.`
-            } else if (askRank==="q") {
-                message.textContent = `I wanted at least ONE queen, but alas, I had to go fish.`
-            } else if (askRank==="k") {
-                message.textContent = `I wanted at least ONE king, but alas, I had to go fish.`
-            } else if (askRank==="a") {
-                message.textContent = `I wanted at least ONE ace, but alas, I had to go fish.`
-            } 
-        } else {
-            message.textContent = `I wanted at least ONE ${askRank}, but alas, I had to go fish.`
-        }
+        convertedRank=askRank
+        rankConvert(askRank)
+        message.textContent = `I wanted at least ONE ${convertedRank}, but alas, I had to go fish.`
         
     }
     toggleVisibility(yourTurn)
@@ -326,19 +345,9 @@ function botAsk() {
 /* Checks point conditions for player */
 
 function playerPointModal(rank) {
-    if (isNaN(rank)) {
-        if (rank==="j") {
-            modalMessage.textContent="Wow, you've gathered all the jacks! They'll be taken out of play, and your score will be increased by 1."
-        } else if (rank==="q") {
-            modalMessage.textContent="Wow, you've gathered all the queens! They'll be taken out of play, and your score will be increased by 1."
-        } else if (rank==="k") {
-            modalMessage.textContent="Wow, you've gathered all the kings! They'll be taken out of play, and your score will be increased by 1."
-        } else {
-            modalMessage.textContent="Wow, you've gathered all the aces! They'll be taken out of play, and your score will be increased by 1."
-        }
-    } else {
-        modalMessage.textContent=`Wow, you've gathered all the ${rank}'s! They'll be taken out of play, and your score will be increased by 1.`
-    }
+    convertedRank=rank
+    rankConvert(rank)
+    modalMessage.textContent=`Wow, you've gathered all the ${convertedRank}s! \n That's one point for you!`
     toggleVisibility(modalWindow)
 }
 
@@ -377,19 +386,9 @@ function playerPointCheck() {
 /* Checks point conditions for bot */
 
 function botPointModal(rank) {
-    if (isNaN(rank)) {
-        if (rank==="j") {
-            modalMessage.textContent="I've gathered all the jacks! They'll be taken out of play, and my score will be increased by 1."
-        } else if (rank==="q") {
-            modalMessage.textContent="I've gathered all the queens! They'll be taken out of play, and my score will be increased by 1."
-        } else if (rank==="k") {
-            modalMessage.textContent="I've gathered all the kings! They'll be taken out of play, and my score will be increased by 1."
-        } else {
-            modalMessage.textContent="I've gathered all the aces! They'll be taken out of play, and my score will be increased by 1."
-        }
-    } else {
-        modalMessage.textContent=`I've gathered all the ${rank}'s! They'll be taken out of play, and my score will be increased by 1.`
-    }
+    convertedRank=rank
+    rankConvert(rank)
+    modalMessage.textContent=`I've gathered all the ${convertedRank}s! \n That's one point for me!`
     toggleVisibility(modalWindow)
 }
 
