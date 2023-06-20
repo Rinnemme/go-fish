@@ -41,7 +41,8 @@ body {
     margin-bottom:20px;
 }
 
-#modal-button {
+#modal-button,
+#play-again-button {
     background-color:rgb(255, 173, 173);
     color:black;
     font-weight:bold;

@@ -58,6 +58,7 @@ const cardImages = Array.from(document.querySelectorAll(".playing-card"))
 const goFish = document.getElementById("go-fish")
 const message = document.getElementById("message")
 const modalOk = document.getElementById("modal-button")
+const playAgain = document.getElementById("play-again-button")
 const modalWindow = document.getElementById("modal")
 const modalMessage = document.getElementById("modal-text")
 const myTurn = document.getElementById("player-turn")
@@ -250,21 +251,14 @@ function checkEmptyPlayerHand() {
 
 function askBot(askRank) {
     let successful = "no"
-    /* looping to bully this into functioning properly */
-    for(let i=0;i<10;i++) {
     botHand.forEach (card => {
         if (card.rank == askRank) {
-            const index = botHand.indexOf(card)
-            const takenCard = botHand[index]
-            botHand.splice(index, 1)
-            playerHand.unshift(takenCard)
-            const takenCardImage = document.getElementById(`${takenCard.suit}`+`${takenCard.rank}`)
+            playerHand.unshift(card)
+            const takenCardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
             toggleVisibility(takenCardImage)
-            message.textContent = "Darn, I do! Here you go, you rapscallion..."
-            successful="yes"
-            playerPointCheck()
+            successful = "yes"
         }
-    })}
+    })
     rankButtons.forEach(button => {
         if(button.classList.contains("visible")) {
             toggleVisibility(button)
@@ -279,7 +273,10 @@ function askBot(askRank) {
         message.textContent = "Nope! Looks like you gotta go fish."
         toggleVisibility(goFish)
     } else {
+        botHand = botHand.filter(card => card.rank!==askRank)
+        message.textContent = "Darn, I do! Here you go, you rapscallion..."
         toggleVisibility(yourTurn)
+        playerPointCheck()
     }
 }
 
@@ -288,10 +285,8 @@ function askBot(askRank) {
 goFish.addEventListener("click", function() {
     playerDraw()
     let rankname = playerHand[0].rank
-    console.log(playerHand[0].rank)
     convertedRank = rankname
     rankConvert(rankname)
-    console.log(convertedRank)
     message.textContent = `Enjoy that ${convertedRank} of ${playerHand[0].suit}!`
     toggleVisibility(goFish)
     toggleVisibility(yourTurn)
@@ -304,23 +299,20 @@ function botAsk() {
     const askIndex = Math.floor((Math.random()*botHand.length))
     const askRank = botHand[askIndex].rank
     let successful = "no"
-    /* looping to bully this into functioning properly */
-    for(let i=0;i<10;i++) {
     playerHand.forEach (card => {
         if (card.rank === askRank) {
-            const index = playerHand.indexOf(card)
-            const givenCard = playerHand[index]
-            playerHand.splice(index, 1)
-            botHand.unshift(givenCard)
-            const givenCardImage = document.getElementById(`${givenCard.suit}`+`${givenCard.rank}`)
+            botHand.unshift(card)
+            const givenCardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
             toggleVisibility(givenCardImage)
             successful = "yes"
         }
-    })}
+    })
+    // }
     if (successful === "yes") {
         convertedRank=askRank
         rankConvert(askRank)
         message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
+        playerHand = playerHand.filter(card => card.rank!==askRank)
     }
     if (successful === "no") {
         if (playingDeck.length===0) {
@@ -347,7 +339,7 @@ function botAsk() {
 function playerPointModal(rank) {
     convertedRank=rank
     rankConvert(rank)
-    modalMessage.textContent=`Wow, you've gathered all the ${convertedRank}s! \n That's one point for you!`
+    modalMessage.textContent=`Wow, you've gathered all the ${convertedRank}s! That's one point for you!`
     toggleVisibility(modalWindow)
 }
 
@@ -361,23 +353,17 @@ function playerPointCheck() {
     ranks.forEach(targetRank => {
         const checkingObject = playerHand.filter(card => card.rank==targetRank)
         if (checkingObject.length === 4) {
-            gameCheck()
-            /* Iterating 9 times beacuse it won't iterate thoroughly ever */
-            for(let i=0;i<10;i++) {
             cardImages.forEach(image => {
                 if (image.id.slice(-1)==targetRank && image.classList.contains("visible")) {
                     toggleVisibility(image)
                 }
             })
-            playerHand.forEach(item => {
-                if (item.rank==targetRank) {
-                    const index = playerHand.indexOf(item)
-                    playerHand.splice(index,1)
-                }
-            })
-        }
+            playerHand = playerHand.filter(card => card.rank!==targetRank)
             playerPoint()
-            playerPointModal(targetRank)
+            gameCheck()
+            if(!modalMessage.textContent.includes(`that's game`)) {
+                playerPointModal(targetRank)
+            }
         }
     })
 }
@@ -388,7 +374,7 @@ function playerPointCheck() {
 function botPointModal(rank) {
     convertedRank=rank
     rankConvert(rank)
-    modalMessage.textContent=`I've gathered all the ${convertedRank}s! \n That's one point for me!`
+    modalMessage.textContent=`I've gathered all the ${convertedRank}s! That's one point for me!`
     toggleVisibility(modalWindow)
 }
 
@@ -402,18 +388,30 @@ function botPointCheck() {
     ranks.forEach(targetRank => {
         const checkingObject = botHand.filter(card => card.rank==targetRank)
         if (checkingObject.length === 4) {
-            gameCheck()
-            /* Iterating 9 times beacuse it won't iterate thoroughly ever */
-            for(let i=0;i<10;i++) {
-            botHand.forEach(item => {
-                if (item.rank==targetRank) {
-                    const index = botHand.indexOf(item)
-                    botHand.splice(index,1)
-                }
-            })
-            }
+            botHand = botHand.filter(card => card.rank!==targetRank)
+            /* Looping 9 times beacuse it won't iterate thoroughly ever */
+            // for(let i=0;i<10;i++) {
+            // botHand.forEach(item => {
+            //     console.log(`checking`)
+            //     console.log(item)
+            //     if (item.rank==targetRank) {
+            //         const index = botHand.indexOf(item)
+            //         console.log(`index is ${index}`)
+            //         console.log(`for this point, we should remove`)
+            //         console.log(botHand[index])
+            //         console.log(`which should be the same as`)
+            //         console.log(item)
+            //         botHand.splice(index,1)
+            //         console.log(`New bot hand:`)
+            //         console.log(botHand)
+            //     }
+            // })
+            // }
             botPoint()
-            botPointModal(targetRank)
+            gameCheck()
+            if(!modalMessage.textContent.includes(`that's game`)) {
+                botPointModal(targetRank)
+            }
         }
     })
 }
@@ -428,14 +426,19 @@ function gameCheck() {
     if (botScore+playerScore===13) {
         game = "done"
         if (botScore>playerScore) {
-            modalMessage.textContent=`And that's game!<br>Looks like I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
+            modalMessage.textContent=`And that's game! Looks like I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
         } else {
-            modalMessage.textContent=`And that's game!<br>Looks like you won with ${playerScore} sets of four to my ${botScore} - congratulations!`
+            modalMessage.textContent=`And that's game! Looks like you won with ${playerScore} sets of four to my ${botScore} - congratulations!`
         }
         toggleVisibility(modal)
-        toggleVisibility(modalOk)
+        modalOk.classList.add("invisible")
+        toggleVisibility(playAgain)
     }
 }
+
+/* Resets the game when the game is over */
+
+playAgain.addEventListener("click", function() {location.reload()})
 
 /* for later, perhaps
 
