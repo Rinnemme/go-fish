@@ -439,19 +439,3 @@ function gameCheck() {
 /* Resets the game when the game is over */
 
 playAgain.addEventListener("click", function() {location.reload()})
-
-/* for later, perhaps
-
-    function resetgame() {
-    playingDeck=deck
-    currentTurn = ""
-    playerHand = []
-    botHand = []
-    playingDeck = deck;
-    playerScore = 0
-    playerScoreBoard.textContent=0;
-    botScore = 0
-    botScoreBoard.textContent=0;
-    game = "on"
-    dealHands()
-} */
