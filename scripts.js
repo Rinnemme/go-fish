@@ -111,14 +111,30 @@ function activateRankButtons() {
 }
 
 /* Deals a hand of 5 when any player has 0 cards, including at the beginning of the game */
+/* If deck has fewer than 5 cards, it will deal until the deck hits 0 */
 
-// function dealHands() {
-//     handCheck()
-//     // for(let i=1;i<6;i++) {playerDraw()}
-//     // for(let i=1;i<6;i++) {botDraw()}
-// }
-
-/* Establishes who gets first turn */
+function handCheck() {
+    if (botHand.length===0) {
+        if (playingDeck.length<5) {
+            while (playingDeck.length>0) {
+                botDraw()
+            }
+        }
+        else {
+            for(let i=1;i<6;i++) {botDraw()}
+        }
+    }
+    if (playerHand.length===0) {
+        if (playingDeck.length<5) {
+            while (playingDeck.length>0) {
+                botDraw()
+            }
+        }
+        else {
+            for(let i=1;i<6;i++) {playerDraw()}
+        }
+    }
+}
 
 function pickTurn() {
     currentTurn = turns[Math.floor(Math.random()*2)]
@@ -365,7 +381,6 @@ function playerPointCheck() {
             })
             playerHand = playerHand.filter(card => card.rank!=targetRank)
             playerPoint()
-            gameCheck()
             if(!modalMessage.textContent.includes(`that's game`)) {
                 playerPointModal(targetRank)
             }
@@ -393,26 +408,7 @@ function botPointCheck() {
         const checkingObject = botHand.filter(card => card.rank==targetRank)
         if (checkingObject.length === 4) {
             botHand = botHand.filter(card => card.rank!=targetRank)
-            /* Looping 9 times beacuse it won't iterate thoroughly ever */
-            // for(let i=0;i<10;i++) {
-            // botHand.forEach(item => {
-            //     console.log(`checking`)
-            //     console.log(item)
-            //     if (item.rank==targetRank) {
-            //         const index = botHand.indexOf(item)
-            //         console.log(`index is ${index}`)
-            //         console.log(`for this point, we should remove`)
-            //         console.log(botHand[index])
-            //         console.log(`which should be the same as`)
-            //         console.log(item)
-            //         botHand.splice(index,1)
-            //         console.log(`New bot hand:`)
-            //         console.log(botHand)
-            //     }
-            // })
-            // }
             botPoint()
-            gameCheck()
             if(!modalMessage.textContent.includes(`that's game`)) {
                 botPointModal(targetRank)
             }
@@ -422,9 +418,12 @@ function botPointCheck() {
 
 /* Allows deactivating modal once it pops up and you've read its message (generally following a point) */
 
-modalOk.addEventListener("click", function() {toggleVisibility(modalWindow)})
+modalOk.addEventListener("click", function() {
+    toggleVisibility(modalWindow)
+    gameCheck()
+})
 
-/* Checks if the game is over */
+/* Checks if the game is over, throws up modal window if so */
 
 function gameCheck() {
     if (botScore+playerScore===13) {
@@ -440,31 +439,6 @@ function gameCheck() {
     }
 }
 
-/* Resets the game when the game is over */
+/* Resets the game (reloads the page) when the game is over */
 
 playAgain.addEventListener("click", function() {location.reload()})
-
-// Checks whether bot/player hands have reached 0 and draws five cards if so
-
-function handCheck() {
-    if (botHand.length===0) {
-        if (playingDeck.length<5) {
-            while (playingDeck.length>0) {
-                botDraw()
-            }
-        }
-        else {
-            for(let i=1;i<6;i++) {botDraw()}
-        }
-    }
-    if (playerHand.length===0) {
-        if (playingDeck.length<5) {
-            while (playingDeck.length>0) {
-                botDraw()
-            }
-        }
-        else {
-            for(let i=1;i<6;i++) {playerDraw()}
-        }
-    }
-}
