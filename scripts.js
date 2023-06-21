@@ -52,24 +52,24 @@ const deck = [
     {suit: 'diamonds', rank:"k"},
     {suit: 'diamonds', rank:"a"}
 ]
-const doesBotHaveAny = document.getElementById("do-you-have")
-const botScoreBoard = document.getElementById("bot-score")
-const cardImages = Array.from(document.querySelectorAll(".playing-card"))
-const goFishButton = document.getElementById("go-fish")
-const message = document.getElementById("message")
-const modalOk = document.getElementById("modal-button")
-const playAgainButton = document.getElementById("play-again-button")
-const modalWindow = document.getElementById("modal")
-const modalMessage = document.getElementById("modal-text")
-const playerTurnButton = document.getElementById("player-turn")
-const firstTurnOk = document.getElementById("first-turn-ok")
-const playerScoreBoard = document.getElementById("player-score")
-const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
+const doesBotHaveAny = document.getElementById ("do-you-have")
+const botScoreBoard = document.getElementById ("bot-score")
+const cardImages = Array.from (document.querySelectorAll (".playing-card"))
+const goFishButton = document.getElementById ("go-fish")
+const message = document.getElementById ("message")
+const modalOk = document.getElementById ("modal-button")
+const playAgainButton = document.getElementById ("play-again-button")
+const modalWindow = document.getElementById ("modal")
+const modalMessage = document.getElementById ("modal-text")
+const playerTurnButton = document.getElementById ("player-turn")
+const firstTurnOk = document.getElementById ("first-turn-ok")
+const playerScoreBoard = document.getElementById ("player-score")
+const rankButtons = Array.from (document.querySelectorAll (".rank-button"))
 const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a"]
-const scoreboard = document.getElementById("score")
-const startButton = document.getElementById("start-button")
-const scoreboardToggleButton = document.getElementById("score-button")
-const botTurnButton = document.getElementById("bot-turn")
+const scoreboard = document.getElementById ("score")
+const startButton = document.getElementById ("start-button")
+const scoreboardToggleButton = document.getElementById ("score-button")
+const botTurnButton = document.getElementById ("bot-turn")
 
 let convertedRank = ""
 let botHand = []
@@ -82,107 +82,107 @@ let playingDeck = deck;
 
 /* Hides and unhides elements by toggling two classes simultaneously */
 
-function toggleVisibility(element) {
-    element.classList.toggle("visible")
-    element.classList.toggle("invisible")
+function toggleVisibility (element) {
+    element.classList.toggle ("visible")
+    element.classList.toggle ("invisible")
 }
 
 /* Toggles scoreboard */
 
-function toggleScoreboard() {
-    toggleVisibility(scoreboard)
-    if(scoreboard.classList.contains("invisible")) {
-        scoreboardToggleButton.textContent="Show Score"
+function toggleScoreboard () {
+    toggleVisibility (scoreboard)
+    if (scoreboard.classList.contains ("invisible")) {
+        scoreboardToggleButton.textContent = "Show Score"
     } else {
-        scoreboardToggleButton.textContent="Hide Score"
+        scoreboardToggleButton.textContent = "Hide Score"
     }
 }
 
 /* Deals a hand of 5 when any player has 0 cards, including at the beginning of the game */
 /* If deck has fewer than 5 cards, it will deal until the deck hits 0 */
 
-function handCheck() {
+function handCheck () {
     if (botHand.length === 0) {
         if (playingDeck.length < 5) {
             while (playingDeck.length > 0) {
-                botDraw()
+                botDraw ()
             }
         }
         else {
-            for(let i = 1; i < 6; i ++) {botDraw()}
+            for (let i = 1; i < 6; i ++) {botDraw ()}
         }
     }
     if (playerHand.length === 0) {
         if (playingDeck.length < 5) {
             while (playingDeck.length > 0) {
-                botDraw()
+                botDraw ()
             }
         }
         else {
-            for (let i = 1; i < 6; i ++) {playerDraw()}
+            for (let i = 1; i < 6; i ++) {playerDraw ()}
         }
     }
 }
 
-function pickFirstTurn() {
-    firstTurn = Math.floor(Math.random()*2)
+function pickFirstTurn () {
+    firstTurn = Math.floor (Math.random () * 2)
 }
 
 /* Makes it the bot's turn */
 
-function makeBotTurn() {
-    botAsk()
-    botPointCheck()
+function makeBotTurn () {
+    botAsk ()
+    botPointCheck ()
 }
 
 /* Makes it the player's turn */
 
-function makePlayerTurn() {
+function makePlayerTurn () {
     message.textContent = "Ask me for a card rank you've got!"
-    toggleVisibility(doesBotHaveAny)
-    toggleVisibility(playerTurnButton)
+    toggleVisibility (doesBotHaveAny)
+    toggleVisibility (playerTurnButton)
 }
 
 /* Lets the player know, before the action, who is acting first */
 
-function startGame() {
-    handCheck()
-    toggleVisibility(scoreboard)
-    toggleVisibility(scoreboardToggleButton)
-    pickFirstTurn()
-    toggleVisibility(startButton)
-    toggleVisibility(firstTurnOk)
-    if (firstTurn===0) {
+function startGame () {
+    handCheck ()
+    toggleVisibility (scoreboard)
+    toggleVisibility (scoreboardToggleButton)
+    pickFirstTurn ()
+    toggleVisibility (startButton)
+    toggleVisibility (firstTurnOk)
+    if (firstTurn === 0) {
         message.textContent = "Looks like I'm up first!"
     }
-    if (firstTurn===1) {
+    if (firstTurn === 1) {
         message.textContent = "Looks like you're up first!"
     }
 }
 
 /* Actually kicks off the action */
 
-function acknowledgeFirstTurn() {
-    toggleVisibility(firstTurnOk)
-    if (firstTurn===1) {
-        toggleVisibility(botTurnButton)
-        botAsk()
+function acknowledgeFirstTurn () {
+    toggleVisibility (firstTurnOk)
+    if (firstTurn === 1) {
+        toggleVisibility (botTurnButton)
+        botAsk ()
     }
-    if (firstTurn===0) {
+    if (firstTurn === 0) {
         message.textContent = "Ask me for a card rank you've got!"
-        toggleVisibility(doesBotHaveAny)
+        toggleVisibility (doesBotHaveAny)
     }
 }
 
 /* Displays list of ranks you can ask for */
 
-function doesBotHave() {
-    toggleVisibility(doesBotHaveAny)
-    rankButtons.forEach(button => {
-        playerHand.forEach(card => {
+function doesBotHave () {
+    toggleVisibility (doesBotHaveAny)
+    rankButtons.forEach (button => {
+        playerHand.forEach (card => {
             const checkRank = button.id
-            if(checkRank===card.rank && !button.classList.contains("visible")) {
-            toggleVisibility(button)
+            if (checkRank === card.rank && !button.classList.contains ("visible")) {
+            toggleVisibility (button)
             } 
         })
     })
@@ -190,61 +190,59 @@ function doesBotHave() {
 
 /* Draws random cards into player's/bot's hands */
 
-function playerDraw() {
-    const pickIndex = Math.floor((Math.random()*playingDeck.length))
-        const card = playingDeck[pickIndex]
-        playerHand.unshift(card)
-        playingDeck.splice(pickIndex, 1)
-        const cardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
-        toggleVisibility(cardImage)
+function playerDraw () {
+    const pickIndex = Math.floor ((Math.random () * playingDeck.length))
+        const card = playingDeck [pickIndex]
+        playerHand.unshift (card)
+        playingDeck.splice (pickIndex, 1)
+        const cardImage = document.getElementById (`${card.suit}${card.rank}`)
+        toggleVisibility (cardImage)
 }
 
-function botDraw() {
-    const pickIndex = Math.floor((Math.random()*playingDeck.length))
-    const card = playingDeck[pickIndex]
-    botHand.unshift(card)
-    playingDeck.splice(pickIndex, 1) 
+function botDraw () {
+    const pickIndex = Math.floor ((Math.random () * playingDeck.length))
+    const card = playingDeck [pickIndex]
+    botHand.unshift (card)
+    playingDeck.splice (pickIndex, 1) 
 }
 
 /* Converts names of face cards in instances where rank is displayed in writing */
 
-function rankConvert(targetrank) {
-    if (isNaN(targetrank)) {
-        if (targetrank === "j") {convertedRank = "jack"}
-        else if (targetrank === "q") {convertedRank = "queen"}
-        else if (targetrank === "k") {convertedRank = "king"}
-        else if (targetrank === "a") {convertedRank = "ace"}
-        else if (targetrank === "t") {convertedRank = "10"}
-    }
+function rankConvert (targetrank) {
+    if (targetrank === "j") {convertedRank = "jack"}
+    else if (targetrank === "q") {convertedRank = "queen"}
+    else if (targetrank === "k") {convertedRank = "king"}
+    else if (targetrank === "a") {convertedRank = "ace"}
+    else if (targetrank === "t") {convertedRank = "10"}
 }
 
 /* Checks for empty hand, draws (up to) 5 cards */
 
-function checkEmptyBotHand() {
-    if (botHand.length===0) {
-        if (playingDeck.length>=5) {
-            for(let i=1;i<=5;i++) {
-                playerDraw()
+function checkEmptyBotHand () {
+    if (botHand.lengt === 0) {
+        if (playingDeck.length >= 5) {
+            for (let i = 1; i <= 5; i++) {
+                playerDraw ()
             }
 
         } else {
-            for(let i=1;i<=playingDeck.length;i++) {
-                playerDraw()
+            for (let i=1; i <= playingDeck.length; i++) {
+                playerDraw ()
             }
         }
     }
 }
 
-function checkEmptyPlayerHand() {
-    if (playerHand.length===0) {
-        if (playingDeck.length>=5) {
-            for(let i=1;i<=5;i++) {
-                botDraw()
+function checkEmptyPlayerHand () {
+    if (playerHand.length === 0) {
+        if (playingDeck.length >= 5) {
+            for (let i = 1; i <= 5; i++) {
+                botDraw ()
             }
 
         } else {
-            for(let i=1;i<=playingDeck.length;i++) {
-                botDraw()
+            for(let i = 1; i <= playingDeck.length; i++) {
+                botDraw ()
             }
         }
     }
@@ -252,121 +250,121 @@ function checkEmptyPlayerHand() {
 
 /* Asks the bot for a card */
 
-function askBotForCard(targetRank) {
+function askBotForCard (targetRank) {
     let successful = "no"
     botHand.forEach (card => {
         if (card.rank === targetRank) {
-            playerHand.unshift(card)
-            const takenCardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
-            toggleVisibility(takenCardImage)
+            playerHand.unshift (card)
+            const takenCardImage = document.getElementById (`${card.suit}${card.rank}`)
+            toggleVisibility (takenCardImage)
             successful = "yes"
         }
     })
-    rankButtons.forEach(button => {
-        if(button.classList.contains("visible")) {
-            toggleVisibility(button)
+    rankButtons.forEach (button => {
+        if (button.classList.contains ("visible")) {
+            toggleVisibility (button)
         }
     })
-    if (successful==="no") {
-        if (playingDeck.length===0) {
+    if (successful === "no") {
+        if (playingDeck.length === 0) {
             message.textContent = "Nope, and the deck's all gone! Guess it's my turn."
-            toggleVisibility(botTurnButton)
+            toggleVisibility (botTurnButton)
             return;
         }
         message.textContent = "Nope! Looks like you gotta go fish."
-        toggleVisibility(goFishButton)
+        toggleVisibility (goFishButton)
     } else {
         message.textContent = "Darn, I do! Here you go, you rapscallion..."
-        toggleVisibility(botTurnButton)
-        playerPointCheck()
-        botHand = botHand.filter(card => card.rank!==targetRank)
-        handCheck()
+        toggleVisibility (botTurnButton)
+        playerPointCheck ()
+        botHand = botHand.filter (card => card.rank !== targetRank)
+        handCheck ()
     }
 }
 
 /* Fishes for the player*/
 
-function goFish() {
-    playerDraw()
-    let rankname = playerHand[0].rank
+function goFish () {
+    playerDraw ()
+    let rankname = playerHand [0].rank
     convertedRank = rankname
-    rankConvert(rankname)
-    message.textContent = `Enjoy that ${convertedRank} of ${playerHand[0].suit}!`
-    toggleVisibility(goFishButton)
-    toggleVisibility(botTurnButton)
-    playerPointCheck()
-    handCheck()
+    rankConvert (rankname)
+    message.textContent = `Enjoy that ${convertedRank} of ${playerHand [0].suit}!`
+    toggleVisibility (goFishButton)
+    toggleVisibility (botTurnButton)
+    playerPointCheck ()
+    handCheck ()
 }
 
 /* Has bot ask for a card and tell you how it went */
 
-function botAsk() {
-    const askIndex = Math.floor((Math.random()*botHand.length))
-    const targetRank = botHand[askIndex].rank
+function botAsk () {
+    const askIndex = Math.floor ((Math.random () * botHand.length))
+    const targetRank = botHand [askIndex].rank
     let successful = "no"
     playerHand.forEach (card => {
         if (card.rank === targetRank) {
-            botHand.unshift(card)
-            const givenCardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
-            toggleVisibility(givenCardImage)
+            botHand.unshift (card)
+            const givenCardImage = document.getElementById (`${card.suit}${card.rank}`)
+            toggleVisibility (givenCardImage)
             successful = "yes"
         }
     })
     // }
     if (successful === "yes") {
-        convertedRank=targetRank
-        rankConvert(targetRank)
+        convertedRank = targetRank
+        rankConvert (targetRank)
         message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
-        playerHand = playerHand.filter(card => card.rank!==targetRank)
+        playerHand = playerHand.filter (card => card.rank !== targetRank)
     }
     if (successful === "no") {
-        if (playingDeck.length===0) {
-            convertedRank=targetRank
-            rankConvert(targetRank)
+        if (playingDeck.length === 0) {
+            convertedRank = targetRank
+            rankConvert (targetRank)
             message.textContent = `You have no ${convertedRank}s, and the deck is empty. Back to you!`
-            toggleVisibility(botTurnButton)
-            toggleVisibility(playerTurnButton)
+            toggleVisibility (botTurnButton)
+            toggleVisibility (playerTurnButton)
             return;
         }
-        botDraw()
-        convertedRank=targetRank
-        rankConvert(targetRank)
+        botDraw ()
+        convertedRank = targetRank
+        rankConvert (targetRank)
         message.textContent = `I wanted at least ONE ${convertedRank}, but alas, I had to go fish.`
         
     }
-    toggleVisibility(botTurnButton)
-    toggleVisibility(playerTurnButton)
-    handCheck()
+    toggleVisibility (botTurnButton)
+    toggleVisibility (playerTurnButton)
+    handCheck ()
 }
 
 /* Checks point conditions for player */
 
-function playerPointModal(rank) {
-    convertedRank=rank
-    rankConvert(rank)
-    modalMessage.textContent=`Wow, you've gathered all the ${convertedRank}s! That's one point for you!`
-    toggleVisibility(modalWindow)
+function playerPointModal (rank) {
+    convertedRank = rank
+    rankConvert (rank)
+    modalMessage.textContent = `Wow, you've gathered all the ${convertedRank}s! That's one point for you!`
+    toggleVisibility (modalWindow)
 }
 
-function playerPoint() {
-    playerScore+=1
-    playerScoreBoard.textContent=playerScore
+function playerPoint () {
+    playerScore += 1
+    playerScoreBoard.textContent = playerScore
     message.textContent = "Congrats on your point! Now, where were we?"
 }
 
 function playerPointCheck() {
-    ranks.forEach(targetRank => {
+    ranks.forEach (targetRank => {
         const checkingObject = playerHand.filter(card => card.rank===targetRank)
         if (checkingObject.length === 4) {
-            cardImages.forEach(image => {
-                if (image.id===targetRank && image.classList.contains("visible")) {
+            cardImages.forEach (image => {
+                if (image.id === targetRank && image.classList.contains("visible")) {
                     toggleVisibility(image)
                 }
             })
-            playerHand = playerHand.filter(card => card.rank!==targetRank)
-            playerPoint()
-            if(!modalMessage.textContent.includes(`that's game`)) {
-                playerPointModal(targetRank)
+            playerHand = playerHand.filter(card => card.rank !== targetRank)
+            playerPoint ()
+             if (!modalMessage.textContent.includes (`that's game`)) {
+                playerPointModal (targetRank)
             }
         }
     })
@@ -374,27 +372,27 @@ function playerPointCheck() {
 
 /* Checks point conditions for bot */
 
-function botPointModal(rank) {
-    convertedRank=rank
-    rankConvert(rank)
-    modalMessage.textContent=`I've gathered all the ${convertedRank}s! That's one point for me!`
-    toggleVisibility(modalWindow)
+function botPointModal (rank) {
+    convertedRank = rank
+    rankConvert (rank)
+    modalMessage.textContent = `I've gathered all the ${convertedRank}s! That's one point for me!`
+    toggleVisibility (modalWindow)
 }
 
-function botPoint() {
-    botScore+=1
-    botScoreBoard.textContent=botScore
+function botPoint () {
+    botScore += 1
+    botScoreBoard.textContent = botScore
     message.textContent = "Bet you didn't see that coming! Now, where were we?"
 }
 
-function botPointCheck() {
-    ranks.forEach(targetRank => {
-        const checkingObject = botHand.filter(card => card.rank===targetRank)
+function botPointCheck () {
+    ranks.forEach (targetRank => {
+        const checkingObject = botHand.filter (card => card.rank === targetRank)
         if (checkingObject.length === 4) {
-            botHand = botHand.filter(card => card.rank!==targetRank)
+            botHand = botHand.filter (card => card.rank !== targetRank)
             botPoint()
-            if(!modalMessage.textContent.includes(`that's game`)) {
-                botPointModal(targetRank)
+            if (!modalMessage.textContent.includes (`that's game`)) {
+                botPointModal (targetRank)
             }
         }
     })
@@ -402,23 +400,23 @@ function botPointCheck() {
 
 /* Allows deactivating modal once it pops up and you've read its message (generally following a point) */
 
-function closePointModal() {
-    toggleVisibility(modalWindow)
-    gameCheck()
+function closePointModal () {
+    toggleVisibility (modalWindow)
+    gameCheck ()
 }
 
 /* Checks if the game is over, throws up modal window if so */
 
-function gameCheck() {
-    if (botScore+playerScore===13) {
+function gameCheck () {
+    if (botScore + playerScore === 13) {
         game = "done"
-        if (botScore>playerScore) {
-            modalMessage.textContent=`And that's game! Looks like I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
+        if (botScore > playerScore) {
+            modalMessage.textContent = `And that's game! Looks like I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
         } else {
-            modalMessage.textContent=`And that's game! Looks like you won with ${playerScore} sets of four to my ${botScore} - congratulations!`
+            modalMessage.textContent = `And that's game! Looks like you won with ${playerScore} sets of four to my ${botScore} - congratulations!`
         }
-        toggleVisibility(modal)
-        modalOk.classList.add("invisible")
-        toggleVisibility(playAgainButton)
+        toggleVisibility (modal)
+        modalOk.classList.add ("invisible") 
+        toggleVisibility (playAgainButton)
     }
 }
