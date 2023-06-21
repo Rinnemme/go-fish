@@ -130,14 +130,14 @@ function pickFirstTurn () {
 
 /* Makes it the bot's turn */
 
-function makeBotTurn () {
-    botAsk ()
+function initiateBotTurn () {
+    botAskPlayerForCard ()
     botPointCheck ()
 }
 
 /* Makes it the player's turn */
 
-function makePlayerTurn () {
+function initiatePlayerTurn () {
     message.textContent = "Ask me for a card rank you've got!"
     toggleVisibility (doesBotHaveAny)
     toggleVisibility (playerTurnButton)
@@ -166,7 +166,7 @@ function acknowledgeFirstTurn () {
     toggleVisibility (firstTurnOk)
     if (firstTurn === 1) {
         toggleVisibility (botTurnButton)
-        botAsk ()
+        botAskPlayerForCard ()
     }
     if (firstTurn === 0) {
         message.textContent = "Ask me for a card rank you've got!"
@@ -298,26 +298,24 @@ function goFish () {
 
 /* Has bot ask for a card and tell you how it went */
 
-function botAsk () {
+function botAskPlayerForCard () {
     const askIndex = Math.floor ((Math.random () * botHand.length))
     const targetRank = botHand [askIndex].rank
-    let successful = "no"
+    let playerHasCard = false
     playerHand.forEach (card => {
         if (card.rank === targetRank) {
             botHand.unshift (card)
             const givenCardImage = document.getElementById (`${card.suit}${card.rank}`)
             toggleVisibility (givenCardImage)
-            successful = "yes"
+            playerHasCard = true
         }
     })
-    // }
-    if (successful === "yes") {
+    if (playerHasCard) {
         convertedRank = targetRank
         rankConvert (targetRank)
         message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
         playerHand = playerHand.filter (card => card.rank !== targetRank)
-    }
-    if (successful === "no") {
+    } else {
         if (playingDeck.length === 0) {
             convertedRank = targetRank
             rankConvert (targetRank)
