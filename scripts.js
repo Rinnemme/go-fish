@@ -131,6 +131,8 @@ function pickFirstTurn () {
 /* Makes it the bot's turn */
 
 function initiateBotTurn () {
+    message.style.backgroundColor = "rgb(255, 173, 173)"
+    message.style.color = "black"
     botAskPlayerForCard ()
     botPointCheck ()
 }
@@ -138,6 +140,8 @@ function initiateBotTurn () {
 /* Makes it the player's turn */
 
 function initiatePlayerTurn () {
+    message.style.backgroundColor = "rgb(55, 55, 55)"
+    message.style.color = "white"
     message.textContent = "Ask me for a card rank you've got!"
     toggleVisibility (doesBotHaveAny)
     toggleVisibility (playerTurnButton)
@@ -155,7 +159,7 @@ function startGame () {
     if (firstTurn === 0) {
         message.textContent = "Looks like I'm up first!"
     }
-    if (firstTurn === 1) {
+    else {
         message.textContent = "Looks like you're up first!"
     }
 }
@@ -164,11 +168,11 @@ function startGame () {
 
 function acknowledgeFirstTurn () {
     toggleVisibility (firstTurnOk)
-    if (firstTurn === 1) {
+    if (firstTurn === 0) {
         toggleVisibility (botTurnButton)
         botAskPlayerForCard ()
     }
-    if (firstTurn === 0) {
+    else {
         message.textContent = "Ask me for a card rank you've got!"
         toggleVisibility (doesBotHaveAny)
     }
