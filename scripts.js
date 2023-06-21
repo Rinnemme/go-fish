@@ -128,23 +128,6 @@ function pickFirstTurn () {
     firstTurn = Math.floor (Math.random () * 2)
 }
 
-/* Makes it the bot's turn */
-
-function initiateBotTurn () {
-    message.style.backgroundColor = "rgb(215, 215, 215)"
-    botAskPlayerForCard ()
-    botPointCheck ()
-}
-
-/* Makes it the player's turn */
-
-function initiatePlayerTurn () {
-    message.style.backgroundColor = "rgb(255, 173, 173)"
-    message.textContent = "Ask me for a card rank you've got"
-    toggleVisibility (doesBotHaveAny)
-    toggleVisibility (playerTurnButton)
-}
-
 /* Displays the UI and lets the player know whose turn is first */
 
 function startGame () {
@@ -178,9 +161,26 @@ function acknowledgeFirstTurn () {
     }
 }
 
+/* Makes it the bot's turn */
+
+function initiateBotTurn () {
+    message.style.backgroundColor = "rgb(215, 215, 215)"
+    botAskPlayerForCard ()
+    botPointCheck ()
+}
+
+/* Makes it the player's turn */
+
+function initiatePlayerTurn () {
+    message.style.backgroundColor = "rgb(255, 173, 173)"
+    message.textContent = "Ask me for a card rank you've got"
+    toggleVisibility (doesBotHaveAny)
+    toggleVisibility (playerTurnButton)
+}
+
 /* Displays list of ranks the player can ask for */
 
-function doesBotHave () {
+function displayHeldRanks () {
     toggleVisibility (doesBotHaveAny)
     rankButtons.forEach (button => {
         playerHand.forEach (card => {
