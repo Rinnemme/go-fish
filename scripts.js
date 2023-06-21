@@ -98,6 +98,16 @@ function toggleScoreboard () {
     }
 }
 
+/* Converts names of face cards in instances where rank is displayed in text */
+
+function rankConvert (targetrank) {
+    if (targetrank === "11") {convertedRank = "jack"}
+    else if (targetrank === "12") {convertedRank = "queen"}
+    else if (targetrank === "13") {convertedRank = "king"}
+    else if (targetrank === "14") {convertedRank = "ace"}
+    else if (targetrank === "10") {convertedRank = "10"}
+}
+
 /* Deals a hand of 5 when any player has 0 cards, including at the beginning of the game */
 /* If deck has fewer than 5 cards, it will deal until the deck hits 0 */
 
@@ -161,9 +171,9 @@ function acknowledgeFirstTurn () {
     }
 }
 
-/* Makes it the bot's turn */
+/* Executes the bot's turn */
 
-function initiateBotTurn () {
+function executeBotTurn () {
     message.style.backgroundColor = "rgb(215, 215, 215)"
     botAskPlayerForCard ()
     botPointCheck ()
@@ -207,16 +217,6 @@ function botDraw () {
     const card = playingDeck [pickIndex]
     botHand.unshift (card)
     playingDeck.splice (pickIndex, 1) 
-}
-
-/* Converts names of face cards in instances where rank is displayed in message text */
-
-function rankConvert (targetrank) {
-    if (targetrank === "11") {convertedRank = "jack"}
-    else if (targetrank === "12") {convertedRank = "queen"}
-    else if (targetrank === "13") {convertedRank = "king"}
-    else if (targetrank === "14") {convertedRank = "ace"}
-    else if (targetrank === "10") {convertedRank = "10"}
 }
 
 /* Asks the bot for a card */
