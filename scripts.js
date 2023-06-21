@@ -99,16 +99,6 @@ function toggleScoreboard() {
     }
 }
 
-/* Enables player asking bot for specific cards using buttons */
-
-function activateRankButtons() {
-    rankButtons.forEach(button => {
-        button.addEventListener("click", function() {
-            askBot(button.id)
-        })
-    })
-}
-
 /* Deals a hand of 5 when any player has 0 cards, including at the beginning of the game */
 /* If deck has fewer than 5 cards, it will deal until the deck hits 0 */
 
@@ -176,7 +166,6 @@ startButton.addEventListener("click", function() {
 
 okStart.addEventListener("click", function() {
     handCheck()
-    activateRankButtons()
     toggleVisibility(scoreboard)
     toggleVisibility(scoreboardToggleButton)
     toggleVisibility(okStart)
@@ -267,10 +256,10 @@ function checkEmptyPlayerHand() {
 
 /* Asks the bot for a card */
 
-function askBot(askRank) {
+function askBotForCard(targetRank) {
     let successful = "no"
     botHand.forEach (card => {
-        if (card.rank === askRank) {
+        if (card.rank === targetRank) {
             playerHand.unshift(card)
             const takenCardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
             toggleVisibility(takenCardImage)
@@ -294,7 +283,7 @@ function askBot(askRank) {
         message.textContent = "Darn, I do! Here you go, you rapscallion..."
         toggleVisibility(yourTurn)
         playerPointCheck()
-        botHand = botHand.filter(card => card.rank!==askRank)
+        botHand = botHand.filter(card => card.rank!==targetRank)
         handCheck()
     }
 }
@@ -317,10 +306,10 @@ goFish.addEventListener("click", function() {
 
 function botAsk() {
     const askIndex = Math.floor((Math.random()*botHand.length))
-    const askRank = botHand[askIndex].rank
+    const targetRank = botHand[askIndex].rank
     let successful = "no"
     playerHand.forEach (card => {
-        if (card.rank === askRank) {
+        if (card.rank === targetRank) {
             botHand.unshift(card)
             const givenCardImage = document.getElementById(`${card.suit}`+`${card.rank}`)
             toggleVisibility(givenCardImage)
@@ -329,23 +318,23 @@ function botAsk() {
     })
     // }
     if (successful === "yes") {
-        convertedRank=askRank
-        rankConvert(askRank)
+        convertedRank=targetRank
+        rankConvert(targetRank)
         message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
-        playerHand = playerHand.filter(card => card.rank!==askRank)
+        playerHand = playerHand.filter(card => card.rank!==targetRank)
     }
     if (successful === "no") {
         if (playingDeck.length===0) {
-            convertedRank=askRank
-            rankConvert(askRank)
+            convertedRank=targetRank
+            rankConvert(targetRank)
             message.textContent = `You have no ${convertedRank}s, and the deck is empty. Back to you!`
             toggleVisibility(yourTurn)
             toggleVisibility(myTurn)
             return;
         }
         botDraw()
-        convertedRank=askRank
-        rankConvert(askRank)
+        convertedRank=targetRank
+        rankConvert(targetRank)
         message.textContent = `I wanted at least ONE ${convertedRank}, but alas, I had to go fish.`
         
     }
