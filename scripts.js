@@ -61,7 +61,7 @@ const modalOk = document.getElementById("modal-button")
 const playAgain = document.getElementById("play-again-button")
 const modalWindow = document.getElementById("modal")
 const modalMessage = document.getElementById("modal-text")
-const myTurn = document.getElementById("player-turn")
+const playerTurnButton = document.getElementById("player-turn")
 const okStart = document.getElementById("ok-start")
 const playerScoreBoard = document.getElementById("player-score")
 const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
@@ -75,7 +75,7 @@ const botTurnButton = document.getElementById("bot-turn")
 let convertedRank = ""
 let botHand = []
 let botScore = 0
-let currentTurn = ""
+let firstTurn = ""
 let playerHand = []
 let playerScore = 0
 let playingDeck = deck;
@@ -126,7 +126,7 @@ function handCheck() {
 }
 
 function pickTurn() {
-    currentTurn = turns[Math.floor(Math.random()*2)]
+    firstTurn = turns[Math.floor(Math.random()*2)]
 }
 
 /* Makes it the bot's turn */
@@ -138,15 +138,11 @@ function makeBotTurn() {
 
 /* Makes it the player's turn */
 
-function playerTurn() {
+function makePlayerTurn() {
     message.textContent = "Ask me for a card rank you've got!"
     toggleVisibility(doesBotHaveAny)
+    toggleVisibility(playerTurnButton)
 }
-
-myTurn.addEventListener("click", function() {
-    playerTurn()
-    toggleVisibility(myTurn)
-})
 
 /* Lets the player know, before the action, who is acting first */
 
@@ -154,10 +150,10 @@ startButton.addEventListener("click", function() {
     pickTurn()
     toggleVisibility(startButton)
     toggleVisibility(okStart)
-    if (currentTurn==="bot") {
+    if (firstTurn==="bot") {
         message.textContent = "Looks like I'm up first!"
     }
-    if (currentTurn==="player") {
+    if (firstTurn==="player") {
         message.textContent = "Looks like you're up first!"
     }
 })
@@ -169,12 +165,13 @@ okStart.addEventListener("click", function() {
     toggleVisibility(scoreboard)
     toggleVisibility(scoreboardToggleButton)
     toggleVisibility(okStart)
-    if (currentTurn==="bot") {
+    if (firstTurn==="bot") {
         toggleVisibility(botTurnButton)
         botAsk()
     }
-    if (currentTurn==="player") {
-        playerTurn()
+    if (firstTurn==="player") {
+        message.textContent = "Ask me for a card rank you've got!"
+        toggleVisibility(doesBotHaveAny)
     }
 })
 
@@ -329,7 +326,7 @@ function botAsk() {
             rankConvert(targetRank)
             message.textContent = `You have no ${convertedRank}s, and the deck is empty. Back to you!`
             toggleVisibility(botTurnButton)
-            toggleVisibility(myTurn)
+            toggleVisibility(playerTurnButton)
             return;
         }
         botDraw()
@@ -339,7 +336,7 @@ function botAsk() {
         
     }
     toggleVisibility(botTurnButton)
-    toggleVisibility(myTurn)
+    toggleVisibility(playerTurnButton)
     handCheck()
 }
 
