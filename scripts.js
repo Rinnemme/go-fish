@@ -69,7 +69,6 @@ const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a"]
 const scoreboard = document.getElementById("score")
 const startButton = document.getElementById("start-button")
 const scoreboardToggleButton = document.getElementById("score-button")
-const turns = ["player","bot"]
 const botTurnButton = document.getElementById("bot-turn")
 
 let convertedRank = ""
@@ -103,30 +102,30 @@ function toggleScoreboard() {
 /* If deck has fewer than 5 cards, it will deal until the deck hits 0 */
 
 function handCheck() {
-    if (botHand.length===0) {
-        if (playingDeck.length<5) {
-            while (playingDeck.length>0) {
+    if (botHand.length === 0) {
+        if (playingDeck.length < 5) {
+            while (playingDeck.length > 0) {
                 botDraw()
             }
         }
         else {
-            for(let i=1;i<6;i++) {botDraw()}
+            for(let i = 1; i < 6; i ++) {botDraw()}
         }
     }
-    if (playerHand.length===0) {
-        if (playingDeck.length<5) {
-            while (playingDeck.length>0) {
+    if (playerHand.length === 0) {
+        if (playingDeck.length < 5) {
+            while (playingDeck.length > 0) {
                 botDraw()
             }
         }
         else {
-            for(let i=1;i<6;i++) {playerDraw()}
+            for (let i = 1; i < 6; i ++) {playerDraw()}
         }
     }
 }
 
-function pickTurn() {
-    firstTurn = turns[Math.floor(Math.random()*2)]
+function pickFirstTurn() {
+    firstTurn = Math.floor(Math.random()*2)
 }
 
 /* Makes it the bot's turn */
@@ -150,13 +149,13 @@ function startGame() {
     handCheck()
     toggleVisibility(scoreboard)
     toggleVisibility(scoreboardToggleButton)
-    pickTurn()
+    pickFirstTurn()
     toggleVisibility(startButton)
     toggleVisibility(firstTurnOk)
-    if (firstTurn==="bot") {
+    if (firstTurn===0) {
         message.textContent = "Looks like I'm up first!"
     }
-    if (firstTurn==="player") {
+    if (firstTurn===1) {
         message.textContent = "Looks like you're up first!"
     }
 }
@@ -165,11 +164,11 @@ function startGame() {
 
 function acknowledgeFirstTurn() {
     toggleVisibility(firstTurnOk)
-    if (firstTurn==="bot") {
+    if (firstTurn===1) {
         toggleVisibility(botTurnButton)
         botAsk()
     }
-    if (firstTurn==="player") {
+    if (firstTurn===0) {
         message.textContent = "Ask me for a card rank you've got!"
         toggleVisibility(doesBotHaveAny)
     }
