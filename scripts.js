@@ -423,7 +423,3 @@ function gameCheck() {
         toggleVisibility(playAgain)
     }
 }
-
-/* Resets the game (reloads the page) when the game is over */
-
-playAgain.addEventListener("click", function() {location.reload()})
