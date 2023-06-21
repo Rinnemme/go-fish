@@ -254,13 +254,13 @@ function checkEmptyPlayerHand () {
 /* Asks the bot for a card */
 
 function askBotForCard (targetRank) {
-    let successful = "no"
+    let botHasCard = false
     botHand.forEach (card => {
         if (card.rank === targetRank) {
             playerHand.unshift (card)
             const takenCardImage = document.getElementById (`${card.suit}${card.rank}`)
             toggleVisibility (takenCardImage)
-            successful = "yes"
+            botHasCard = true
         }
     })
     rankButtons.forEach (button => {
@@ -268,7 +268,7 @@ function askBotForCard (targetRank) {
             toggleVisibility (button)
         }
     })
-    if (successful === "no") {
+    if (!botHasCard) {
         if (playingDeck.length === 0) {
             message.textContent = "Nope, and the deck's all gone! Guess it's my turn."
             toggleVisibility (botTurnButton)
@@ -313,12 +313,7 @@ function botAskPlayerForCard () {
             playerHasCard = true
         }
     })
-    if (playerHasCard) {
-        convertedRank = targetRank
-        rankConvert (targetRank)
-        message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
-        playerHand = playerHand.filter (card => card.rank !== targetRank)
-    } else {
+    if (!playerHasCard) {
         if (playingDeck.length === 0) {
             convertedRank = targetRank
             rankConvert (targetRank)
@@ -331,7 +326,11 @@ function botAskPlayerForCard () {
         convertedRank = targetRank
         rankConvert (targetRank)
         message.textContent = `I wanted at least ONE ${convertedRank}, but alas, I had to go fish.`
-        
+    } else {
+        convertedRank = targetRank
+        rankConvert (targetRank)
+        message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
+        playerHand = playerHand.filter (card => card.rank !== targetRank)
     }
     toggleVisibility (botTurnButton)
     toggleVisibility (playerTurnButton)
