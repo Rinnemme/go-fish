@@ -115,7 +115,7 @@ function handCheck () {
     if (playerHand.length === 0) {
         if (playingDeck.length < 5) {
             while (playingDeck.length > 0) {
-                botDraw ()
+                playerDraw ()
             }
         }
         else {
@@ -185,7 +185,7 @@ function doesBotHave () {
     rankButtons.forEach (button => {
         playerHand.forEach (card => {
             if (button.id.includes (card.rank) && !button.classList.contains ("visible")) {
-            toggleVisibility (button)
+                toggleVisibility (button)
             } 
         })
     })
@@ -195,11 +195,11 @@ function doesBotHave () {
 
 function playerDraw () {
     const pickIndex = Math.floor ((Math.random () * playingDeck.length))
-        const card = playingDeck [pickIndex]
-        playerHand.unshift (card)
-        playingDeck.splice (pickIndex, 1)
-        const cardImage = document.getElementById (`${card.suit}${card.rank}`)
-        toggleVisibility (cardImage)
+    const card = playingDeck [pickIndex]
+    playerHand.unshift (card)
+    playingDeck.splice (pickIndex, 1)
+    const cardImage = document.getElementById (`${card.suit}${card.rank}`)
+    toggleVisibility (cardImage)
 }
 
 function botDraw () {
@@ -245,7 +245,7 @@ function askBotForCard (targetRank) {
         message.textContent = "Nope - go fish!"
         toggleVisibility (goFishButton)
     } else {
-        message.textContent = "I do! Here you go."
+        message.textContent = "I do! Here you go"
         toggleVisibility (botTurnButton)
         playerPointCheck ()
         botHand = botHand.filter (card => card.rank !== targetRank)
