@@ -53,64 +53,48 @@ let deck = [
     {suit: 'diamonds', rank:"14"}
 ]
 
-const doesBotHaveAny = document.getElementById ("do-you-have")
 const botScoreBoard = document.getElementById ("bot-score")
+const botTurnButton = document.getElementById ("bot-turn")
 const cardImages = Array.from (document.querySelectorAll (".playing-card"))
+const doesBotHaveAny = document.getElementById ("do-you-have")
+const firstTurnOk = document.getElementById ("first-turn-ok")
 const goFishButton = document.getElementById ("go-fish")
 const message = document.getElementById ("message")
-const modalOk = document.getElementById ("modal-button")
-const playAgainButton = document.getElementById ("play-again-button")
-const modalWindow = document.getElementById ("modal")
 const modalMessage = document.getElementById ("modal-text")
+const modalOk = document.getElementById ("modal-button")
+const modalWindow = document.getElementById ("modal")
+const playAgainButton = document.getElementById ("play-again-button")
 const playerTurnButton = document.getElementById ("player-turn")
-const firstTurnOk = document.getElementById ("first-turn-ok")
 const playerScoreBoard = document.getElementById ("player-score")
 const rankButtons = Array.from (document.querySelectorAll (".rank-button"))
 const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"]
 const scoreboard = document.getElementById ("score")
-const startButton = document.getElementById ("start-button")
 const scoreboardToggleButton = document.getElementById ("score-button")
-const botTurnButton = document.getElementById ("bot-turn")
+const startButton = document.getElementById ("start-button")
 
-let convertedRank = ""
-let firstTurn = ""
 let botHand = []
 let botScore = 0
+let convertedRank = ""
+let firstTurn = ""
 let playerHand = []
 let playerScore = 0
 
-/* Hides and unhides elements by toggling two classes simultaneously */
-
-function toggleVisibility (element) {
-    element.classList.toggle ("visible")
-    element.classList.toggle ("invisible")
-}
-
-/* Toggles scoreboard */
-
-function toggleScoreboard () {
+function pickFirstTurn () {
+    emptyHandCheck ()
+    firstTurn = Math.floor (Math.random () * 2)
     toggleVisibility (scoreboard)
-    if (scoreboard.classList.contains ("invisible")) {
-        scoreboardToggleButton.textContent = "Show Score"
-    } else {
-        scoreboardToggleButton.textContent = "Hide Score"
+    toggleVisibility (scoreboardToggleButton)
+    toggleVisibility (startButton)
+    toggleVisibility (firstTurnOk)
+    if (firstTurn === 0) {
+        message.textContent = "Looks like I'm up first"
+    }
+    else {
+        message.textContent = "Looks like you're up first"
     }
 }
 
-/* Converts names of face cards in instances where rank is displayed in text */
-
-function rankConvert (targetrank) {
-    if (targetrank === "11") {convertedRank = "jack"}
-    else if (targetrank === "12") {convertedRank = "queen"}
-    else if (targetrank === "13") {convertedRank = "king"}
-    else if (targetrank === "14") {convertedRank = "ace"}
-    else if (targetrank === "10") {convertedRank = "10"}
-}
-
-/* Deals a hand of 5 when any player has 0 cards, including at the beginning of the game */
-/* If deck has fewer than 5 cards, it will deal until the deck hits 0 */
-
-function handCheck () {
+function emptyHandCheck () {
     if (botHand.length === 0) {
         if (deck.length < 5) {
             while (deck.length > 0) {
@@ -133,74 +117,10 @@ function handCheck () {
     }
 }
 
-function pickFirstTurn () {
-    firstTurn = Math.floor (Math.random () * 2)
+function toggleVisibility (element) {
+    element.classList.toggle ("visible")
+    element.classList.toggle ("invisible")
 }
-
-/* Displays the UI and lets the player know whose turn is first */
-
-function startGame () {
-    handCheck ()
-    toggleVisibility (scoreboard)
-    toggleVisibility (scoreboardToggleButton)
-    pickFirstTurn ()
-    toggleVisibility (startButton)
-    toggleVisibility (firstTurnOk)
-    if (firstTurn === 0) {
-        message.textContent = "Looks like I'm up first"
-    }
-    else {
-        message.textContent = "Looks like you're up first"
-    }
-}
-
-/* Initiates the first turn */
-
-function acknowledgeFirstTurn () {
-    toggleVisibility (firstTurnOk)
-    if (firstTurn === 0) {
-        message.style.backgroundColor = "rgb(215, 215, 215)"
-        toggleVisibility (botTurnButton)
-         // ^ included because botAskPlayerforCard also toggles, so this cancels it out
-        botAskPlayerForCard ()
-    }
-    else {
-        message.textContent = "Ask me for a card rank you've got"
-        toggleVisibility (doesBotHaveAny)
-    }
-}
-
-/* Executes the bot's turn */
-
-function executeBotTurn () {
-    message.style.backgroundColor = "rgb(215, 215, 215)"
-    botAskPlayerForCard ()
-    botPointCheck ()
-}
-
-/* Makes it the player's turn */
-
-function initiatePlayerTurn () {
-    message.style.backgroundColor = "rgb(255, 173, 173)"
-    message.textContent = "Ask me for a card rank you've got"
-    toggleVisibility (doesBotHaveAny)
-    toggleVisibility (playerTurnButton)
-}
-
-/* Displays list of ranks the player can ask for */
-
-function displayHeldRanks () {
-    toggleVisibility (doesBotHaveAny)
-    rankButtons.forEach (button => {
-        playerHand.forEach (card => {
-            if (button.id === card.rank && !button.classList.contains ("visible")) {
-                toggleVisibility (button)
-            } 
-        })
-    })
-}
-
-/* Draws random cards from the playing deck */
 
 function playerDraw () {
     const pickIndex = Math.floor ((Math.random () * deck.length))
@@ -218,7 +138,37 @@ function botDraw () {
     deck.splice (pickIndex, 1) 
 }
 
-/* Asks the bot for a card */
+function initiateFirstTurn () {
+    toggleVisibility (firstTurnOk)
+    if (firstTurn === 0) {
+        message.style.backgroundColor = "rgb(215, 215, 215)"
+        toggleVisibility (botTurnButton)
+         // ^ included because botAskPlayerforCard also toggles, so this cancels it out
+        botAskPlayerForCard ()
+    }
+    else {
+        message.textContent = "Ask me for a card rank you've got"
+        toggleVisibility (doesBotHaveAny)
+    }
+}
+
+function initiatePlayerTurn () {
+    message.style.backgroundColor = "rgb(255, 173, 173)"
+    message.textContent = "Ask me for a card rank you've got"
+    toggleVisibility (doesBotHaveAny)
+    toggleVisibility (playerTurnButton)
+}
+
+function displayHeldRanks () {
+    toggleVisibility (doesBotHaveAny)
+    rankButtons.forEach (button => {
+        playerHand.forEach (card => {
+            if (button.id === card.rank && !button.classList.contains ("visible")) {
+                toggleVisibility (button)
+            } 
+        })
+    })
+}
 
 function askBotForCard (targetRank) {
     let botHasCard = false
@@ -248,11 +198,9 @@ function askBotForCard (targetRank) {
         toggleVisibility (botTurnButton)
         playerPointCheck ()
         botHand = botHand.filter (card => card.rank !== targetRank)
-        handCheck ()
+        emptyHandCheck ()
     }
 }
-
-/* Draws a card for the player & tells player what card was drawn */
 
 function goFish () {
     playerDraw ()
@@ -263,10 +211,22 @@ function goFish () {
     toggleVisibility (goFishButton)
     toggleVisibility (botTurnButton)
     playerPointCheck ()
-    handCheck ()
+    emptyHandCheck ()
 }
 
-/* Has bot ask for a card and indicate whether it was successful */
+function rankConvert (targetrank) {
+    if (targetrank === "11") {convertedRank = "jack"}
+    else if (targetrank === "12") {convertedRank = "queen"}
+    else if (targetrank === "13") {convertedRank = "king"}
+    else if (targetrank === "14") {convertedRank = "ace"}
+    else if (targetrank === "10") {convertedRank = "10"}
+}
+
+function executeBotTurn () {
+    message.style.backgroundColor = "rgb(215, 215, 215)"
+    botAskPlayerForCard ()
+    botPointCheck ()
+}
 
 function botAskPlayerForCard () {
     const askIndex = Math.floor ((Math.random () * botHand.length))
@@ -301,10 +261,8 @@ function botAskPlayerForCard () {
     }
     toggleVisibility (botTurnButton)
     toggleVisibility (playerTurnButton)
-    handCheck ()
+    emptyHandCheck ()
 }
-
-/* Checks point conditions for player */
 
 function playerPointCheck () {
     ranks.forEach (targetRank => {
@@ -337,8 +295,6 @@ function addPlayerPoint () {
     message.textContent = "Congrats on your point!"
 }
 
-/* Checks point conditions for bot */
-
 function botPointCheck () {
     ranks.forEach (targetRank => {
         const checkingObject = botHand.filter (card => card.rank === targetRank)
@@ -365,14 +321,10 @@ function addBotPoint () {
     message.textContent = "Now, where were we?"
 }
 
-/* Closes the modal that displays when a point is added */
-
-function closePointModal () {
+function closeModal () {
     toggleVisibility (modalWindow)
     gameCheck ()
 }
-
-/* Checks if the game is over, throws up a modal if so */
 
 function gameCheck () {
     if (botScore + playerScore === 13) {
@@ -385,5 +337,14 @@ function gameCheck () {
         toggleVisibility (modal)
         modalOk.classList.add ("invisible") 
         toggleVisibility (playAgainButton)
+    }
+}
+
+function toggleScoreboard () {
+    toggleVisibility (scoreboard)
+    if (scoreboard.classList.contains ("invisible")) {
+        scoreboardToggleButton.textContent = "Show Score"
+    } else {
+        scoreboardToggleButton.textContent = "Hide Score"
     }
 }
