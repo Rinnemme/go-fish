@@ -140,7 +140,7 @@ function initiateBotTurn () {
 
 function initiatePlayerTurn () {
     message.style.backgroundColor = "rgb(255, 173, 173)"
-    message.textContent = "Ask me for a card rank you've got!"
+    message.textContent = "Ask me for a card rank you've got"
     toggleVisibility (doesBotHaveAny)
     toggleVisibility (playerTurnButton)
 }
@@ -155,10 +155,10 @@ function startGame () {
     toggleVisibility (startButton)
     toggleVisibility (firstTurnOk)
     if (firstTurn === 0) {
-        message.textContent = "Looks like I'm up first!"
+        message.textContent = "Looks like I'm up first"
     }
     else {
-        message.textContent = "Looks like you're up first!"
+        message.textContent = "Looks like you're up first"
     }
 }
 
@@ -173,7 +173,7 @@ function acknowledgeFirstTurn () {
         botAskPlayerForCard ()
     }
     else {
-        message.textContent = "Ask me for a card rank you've got!"
+        message.textContent = "Ask me for a card rank you've got"
         toggleVisibility (doesBotHaveAny)
     }
 }
@@ -260,7 +260,7 @@ function goFish () {
     let rankname = playerHand [0].rank
     convertedRank = rankname
     rankConvert (rankname)
-    message.textContent = `You got a ${convertedRank} of ${playerHand [0].suit}`
+    message.textContent = `You got the ${convertedRank} of ${playerHand [0].suit}`
     toggleVisibility (goFishButton)
     toggleVisibility (botTurnButton)
     playerPointCheck ()
@@ -285,7 +285,7 @@ function botAskPlayerForCard () {
         if (playingDeck.length === 0) {
             convertedRank = targetRank
             rankConvert (targetRank)
-            message.textContent = `You have no ${convertedRank}s, and the deck is empty. Back to you!`
+            message.textContent = `You have no ${convertedRank}s, and the deck is empty, so I can't go fish`
             toggleVisibility (botTurnButton)
             toggleVisibility (playerTurnButton)
             return;
@@ -293,11 +293,11 @@ function botAskPlayerForCard () {
         botDraw ()
         convertedRank = targetRank
         rankConvert (targetRank)
-        message.textContent = `You have no ${convertedRank}s, so I went fish.`
+        message.textContent = `You have no ${convertedRank}s, so I went fish`
     } else {
         convertedRank = targetRank
         rankConvert (targetRank)
-        message.textContent = `I've taken any ${convertedRank}s you had.`
+        message.textContent = `I've taken any ${convertedRank}s you had`
         playerHand = playerHand.filter (card => card.rank !== targetRank)
     }
     toggleVisibility (botTurnButton)
@@ -379,9 +379,9 @@ function gameCheck () {
     if (botScore + playerScore === 13) {
         game = "done"
         if (botScore > playerScore) {
-            modalMessage.textContent = `And that's game! I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
+            modalMessage.textContent = `And that's game! I won with ${botScore} sets of four to your ${playerScore}; Better luck next time!`
         } else {
-            modalMessage.textContent = `And that's game! You won with ${playerScore} sets of four to my ${botScore} - congratulations!`
+            modalMessage.textContent = `And that's game! You won with ${playerScore} sets of four to my ${botScore}; Congratulations!`
         }
         toggleVisibility (modal)
         modalOk.classList.add ("invisible") 
