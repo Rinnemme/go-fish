@@ -7,11 +7,11 @@ const deck = [
     {suit: 'spades', rank:"7"},
     {suit: 'spades', rank:"8"},
     {suit: 'spades', rank:"9"},
-    {suit: 'spades', rank:"t"},
-    {suit: 'spades', rank:"j"},
-    {suit: 'spades', rank:"q"},
-    {suit: 'spades', rank:"k"},
-    {suit: 'spades', rank:"a"},
+    {suit: 'spades', rank:"10"},
+    {suit: 'spades', rank:"11"},
+    {suit: 'spades', rank:"12"},
+    {suit: 'spades', rank:"13"},
+    {suit: 'spades', rank:"14"},
     {suit: 'hearts', rank:"2"},
     {suit: 'hearts', rank:"3"},
     {suit: 'hearts', rank:"4"},
@@ -20,11 +20,11 @@ const deck = [
     {suit: 'hearts', rank:"7"},
     {suit: 'hearts', rank:"8"},
     {suit: 'hearts', rank:"9"},
-    {suit: 'hearts', rank:"t"},
-    {suit: 'hearts', rank:"j"},
-    {suit: 'hearts', rank:"q"},
-    {suit: 'hearts', rank:"k"},
-    {suit: 'hearts', rank:"a"},
+    {suit: 'hearts', rank:"10"},
+    {suit: 'hearts', rank:"11"},
+    {suit: 'hearts', rank:"12"},
+    {suit: 'hearts', rank:"13"},
+    {suit: 'hearts', rank:"14"},
     {suit: 'clubs', rank:"2"},
     {suit: 'clubs', rank:"3"},
     {suit: 'clubs', rank:"4"},
@@ -33,11 +33,11 @@ const deck = [
     {suit: 'clubs', rank:"7"},
     {suit: 'clubs', rank:"8"},
     {suit: 'clubs', rank:"9"},
-    {suit: 'clubs', rank:"t"},
-    {suit: 'clubs', rank:"j"},
-    {suit: 'clubs', rank:"q"},
-    {suit: 'clubs', rank:"k"},
-    {suit: 'clubs', rank:"a"},
+    {suit: 'clubs', rank:"10"},
+    {suit: 'clubs', rank:"11"},
+    {suit: 'clubs', rank:"12"},
+    {suit: 'clubs', rank:"13"},
+    {suit: 'clubs', rank:"14"},
     {suit: 'diamonds', rank:"2"},
     {suit: 'diamonds', rank:"3"},
     {suit: 'diamonds', rank:"4"},
@@ -46,11 +46,11 @@ const deck = [
     {suit: 'diamonds', rank:"7"},
     {suit: 'diamonds', rank:"8"},
     {suit: 'diamonds', rank:"9"},
-    {suit: 'diamonds', rank:"t"},
-    {suit: 'diamonds', rank:"j"},
-    {suit: 'diamonds', rank:"q"},
-    {suit: 'diamonds', rank:"k"},
-    {suit: 'diamonds', rank:"a"}
+    {suit: 'diamonds', rank:"10"},
+    {suit: 'diamonds', rank:"11"},
+    {suit: 'diamonds', rank:"12"},
+    {suit: 'diamonds', rank:"13"},
+    {suit: 'diamonds', rank:"14"}
 ]
 
 const doesBotHaveAny = document.getElementById ("do-you-have")
@@ -66,7 +66,7 @@ const playerTurnButton = document.getElementById ("player-turn")
 const firstTurnOk = document.getElementById ("first-turn-ok")
 const playerScoreBoard = document.getElementById ("player-score")
 const rankButtons = Array.from (document.querySelectorAll (".rank-button"))
-const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a"]
+const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"]
 const scoreboard = document.getElementById ("score")
 const startButton = document.getElementById ("start-button")
 const scoreboardToggleButton = document.getElementById ("score-button")
@@ -184,7 +184,7 @@ function doesBotHave () {
     toggleVisibility (doesBotHaveAny)
     rankButtons.forEach (button => {
         playerHand.forEach (card => {
-            if (button.id.includes (card.rank) && !button.classList.contains ("visible")) {
+            if (button.id === card.rank && !button.classList.contains ("visible")) {
                 toggleVisibility (button)
             } 
         })
@@ -212,11 +212,11 @@ function botDraw () {
 /* Converts names of face cards in instances where rank is displayed in message text */
 
 function rankConvert (targetrank) {
-    if (targetrank === "j") {convertedRank = "jack"}
-    else if (targetrank === "q") {convertedRank = "queen"}
-    else if (targetrank === "k") {convertedRank = "king"}
-    else if (targetrank === "a") {convertedRank = "ace"}
-    else if (targetrank === "t") {convertedRank = "10"}
+    if (targetrank === "11") {convertedRank = "jack"}
+    else if (targetrank === "12") {convertedRank = "queen"}
+    else if (targetrank === "13") {convertedRank = "king"}
+    else if (targetrank === "14") {convertedRank = "ace"}
+    else if (targetrank === "10") {convertedRank = "10"}
 }
 
 /* Asks the bot for a card */
