@@ -340,20 +340,7 @@ function botAskPlayerForCard () {
 
 /* Checks point conditions for player */
 
-function playerPointModal (rank) {
-    convertedRank = rank
-    rankConvert (rank)
-    modalMessage.textContent = `Wow, you've gathered all the ${convertedRank}s! That's one point for you!`
-    toggleVisibility (modalWindow)
-}
-
-function playerPoint () {
-    playerScore += 1
-    playerScoreBoard.textContent = playerScore
-    message.textContent = "Congrats on your point! Now, where were we?"
-}
-
-function playerPointCheck() {
+function playerPointCheck () {
     ranks.forEach (targetRank => {
         const checkingObject = playerHand.filter(card => card.rank===targetRank)
         if (checkingObject.length === 4) {
@@ -363,7 +350,7 @@ function playerPointCheck() {
                 }
             })
             playerHand = playerHand.filter(card => card.rank !== targetRank)
-            playerPoint ()
+            addPlayerPoint ()
              if (!modalMessage.textContent.includes (`that's game`)) {
                 playerPointModal (targetRank)
             }
@@ -371,7 +358,33 @@ function playerPointCheck() {
     })
 }
 
+function playerPointModal (rank) {
+    convertedRank = rank
+    rankConvert (rank)
+    modalMessage.textContent = `Wow, you've gathered all the ${convertedRank}s! That's one point for you!`
+    toggleVisibility (modalWindow)
+}
+
+function addPlayerPoint () {
+    playerScore += 1
+    playerScoreBoard.textContent = playerScore
+    message.textContent = "Congrats on your point! Now, where were we?"
+}
+
 /* Checks point conditions for bot */
+
+function botPointCheck () {
+    ranks.forEach (targetRank => {
+        const checkingObject = botHand.filter (card => card.rank === targetRank)
+        if (checkingObject.length === 4) {
+            botHand = botHand.filter (card => card.rank !== targetRank)
+            addBotPoint ()
+            if (!modalMessage.textContent.includes (`that's game`)) {
+                botPointModal (targetRank)
+            }
+        }
+    })
+}
 
 function botPointModal (rank) {
     convertedRank = rank
@@ -380,23 +393,10 @@ function botPointModal (rank) {
     toggleVisibility (modalWindow)
 }
 
-function botPoint () {
+function addBotPoint () {
     botScore += 1
     botScoreBoard.textContent = botScore
     message.textContent = "Bet you didn't see that coming! Now, where were we?"
-}
-
-function botPointCheck () {
-    ranks.forEach (targetRank => {
-        const checkingObject = botHand.filter (card => card.rank === targetRank)
-        if (checkingObject.length === 4) {
-            botHand = botHand.filter (card => card.rank !== targetRank)
-            botPoint()
-            if (!modalMessage.textContent.includes (`that's game`)) {
-                botPointModal (targetRank)
-            }
-        }
-    })
 }
 
 /* Allows deactivating modal once it pops up and you've read its message (generally following a point) */
