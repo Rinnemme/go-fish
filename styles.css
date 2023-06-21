@@ -73,12 +73,11 @@ body {
     padding:30px;
 }
 
-#player-score {
-    background-color:black;
-    color:white;
+#bot-score {
+    background-color:rgb(215, 215, 215);
 }
 
-#bot-score,
+#player-score,
 #message {
     background-color:rgb(255, 173, 173);
     color:black;
