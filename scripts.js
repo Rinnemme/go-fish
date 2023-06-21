@@ -113,8 +113,10 @@ function activateRankButtons() {
 /* Deals a hand of 5 to each player */
 
 function dealHands() {
-    for(let i=1;i<6;i++) {playerDraw()}
-    for(let i=1;i<6;i++) {botDraw()}
+    playerHandCheck()
+    botHandCheck()
+    // for(let i=1;i<6;i++) {playerDraw()}
+    // for(let i=1;i<6;i++) {botDraw()}
 }
 
 /* Establishes who gets first turn */
@@ -273,10 +275,10 @@ function askBot(askRank) {
         message.textContent = "Nope! Looks like you gotta go fish."
         toggleVisibility(goFish)
     } else {
-        botHand = botHand.filter(card => card.rank!==askRank)
         message.textContent = "Darn, I do! Here you go, you rapscallion..."
         toggleVisibility(yourTurn)
         playerPointCheck()
+        botHand = botHand.filter(card => card.rank!=askRank)
     }
 }
 
@@ -312,7 +314,7 @@ function botAsk() {
         convertedRank=askRank
         rankConvert(askRank)
         message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
-        playerHand = playerHand.filter(card => card.rank!==askRank)
+        playerHand = playerHand.filter(card => card.rank!=askRank)
     }
     if (successful === "no") {
         if (playingDeck.length===0) {
@@ -358,7 +360,7 @@ function playerPointCheck() {
                     toggleVisibility(image)
                 }
             })
-            playerHand = playerHand.filter(card => card.rank!==targetRank)
+            playerHand = playerHand.filter(card => card.rank!=targetRank)
             playerPoint()
             gameCheck()
             if(!modalMessage.textContent.includes(`that's game`)) {
@@ -367,7 +369,6 @@ function playerPointCheck() {
         }
     })
 }
-
 
 /* Checks point conditions for bot */
 
@@ -388,7 +389,7 @@ function botPointCheck() {
     ranks.forEach(targetRank => {
         const checkingObject = botHand.filter(card => card.rank==targetRank)
         if (checkingObject.length === 4) {
-            botHand = botHand.filter(card => card.rank!==targetRank)
+            botHand = botHand.filter(card => card.rank!=targetRank)
             /* Looping 9 times beacuse it won't iterate thoroughly ever */
             // for(let i=0;i<10;i++) {
             // botHand.forEach(item => {
@@ -439,3 +440,17 @@ function gameCheck() {
 /* Resets the game when the game is over */
 
 playAgain.addEventListener("click", function() {location.reload()})
+
+// Checks whether bot/player hands have reached 0 and draws five cards if so
+
+function botHandCheck() {
+    if (botHand.length===0) {
+        for(let i=1;i<6;i++) {botDraw()}
+    }
+}
+
+function playerHandCheck() {
+    if (playerHand.length===0) {
+        for(let i=1;i<6;i++) {playerDraw()}
+    }
+}
