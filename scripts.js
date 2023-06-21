@@ -147,6 +147,9 @@ function makePlayerTurn() {
 /* Lets the player know, before the action, who is acting first */
 
 startButton.addEventListener("click", function() {
+    handCheck()
+    toggleVisibility(scoreboard)
+    toggleVisibility(scoreboardToggleButton)
     pickTurn()
     toggleVisibility(startButton)
     toggleVisibility(okStart)
@@ -161,9 +164,7 @@ startButton.addEventListener("click", function() {
 /* Actually kicks off the action */
 
 okStart.addEventListener("click", function() {
-    handCheck()
-    toggleVisibility(scoreboard)
-    toggleVisibility(scoreboardToggleButton)
+    
     toggleVisibility(okStart)
     if (firstTurn==="bot") {
         toggleVisibility(botTurnButton)
