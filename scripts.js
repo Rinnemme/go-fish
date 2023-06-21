@@ -403,10 +403,10 @@ function botPointCheck() {
 
 /* Allows deactivating modal once it pops up and you've read its message (generally following a point) */
 
-modalOk.addEventListener("click", function() {
+function closePointModal() {
     toggleVisibility(modalWindow)
     gameCheck()
-})
+}
 
 /* Checks if the game is over, throws up modal window if so */
 
