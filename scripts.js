@@ -52,6 +52,7 @@ const deck = [
     {suit: 'diamonds', rank:"k"},
     {suit: 'diamonds', rank:"a"}
 ]
+
 const doesBotHaveAny = document.getElementById ("do-you-have")
 const botScoreBoard = document.getElementById ("bot-score")
 const cardImages = Array.from (document.querySelectorAll (".playing-card"))
@@ -144,7 +145,7 @@ function initiatePlayerTurn () {
     toggleVisibility (playerTurnButton)
 }
 
-/* Lets the player know, before the action, who is acting first */
+/* Displays the UI and lets the player know whose turn is first */
 
 function startGame () {
     handCheck ()
@@ -161,7 +162,7 @@ function startGame () {
     }
 }
 
-/* Actually kicks off the action */
+/* Initiates the first turn */
 
 function acknowledgeFirstTurn () {
     toggleVisibility (firstTurnOk)
@@ -177,7 +178,7 @@ function acknowledgeFirstTurn () {
     }
 }
 
-/* Displays list of ranks you can ask for */
+/* Displays list of ranks the player can ask for */
 
 function doesBotHave () {
     toggleVisibility (doesBotHaveAny)
@@ -191,7 +192,7 @@ function doesBotHave () {
     })
 }
 
-/* Draws random cards into player's/bot's hands */
+/* Draws random cards from the playing deck */
 
 function playerDraw () {
     const pickIndex = Math.floor ((Math.random () * playingDeck.length))
@@ -209,7 +210,7 @@ function botDraw () {
     playingDeck.splice (pickIndex, 1) 
 }
 
-/* Converts names of face cards in instances where rank is displayed in writing */
+/* Converts names of face cards in instances where rank is displayed in message text */
 
 function rankConvert (targetrank) {
     if (targetrank === "j") {convertedRank = "jack"}
@@ -217,38 +218,6 @@ function rankConvert (targetrank) {
     else if (targetrank === "k") {convertedRank = "king"}
     else if (targetrank === "a") {convertedRank = "ace"}
     else if (targetrank === "t") {convertedRank = "10"}
-}
-
-/* Checks for empty hand, draws (up to) 5 cards */
-
-function checkEmptyBotHand () {
-    if (botHand.lengt === 0) {
-        if (playingDeck.length >= 5) {
-            for (let i = 1; i <= 5; i++) {
-                playerDraw ()
-            }
-
-        } else {
-            for (let i=1; i <= playingDeck.length; i++) {
-                playerDraw ()
-            }
-        }
-    }
-}
-
-function checkEmptyPlayerHand () {
-    if (playerHand.length === 0) {
-        if (playingDeck.length >= 5) {
-            for (let i = 1; i <= 5; i++) {
-                botDraw ()
-            }
-
-        } else {
-            for(let i = 1; i <= playingDeck.length; i++) {
-                botDraw ()
-            }
-        }
-    }
 }
 
 /* Asks the bot for a card */
@@ -285,7 +254,7 @@ function askBotForCard (targetRank) {
     }
 }
 
-/* Fishes for the player*/
+/* Draws a card for the player & tells player what card was drawn */
 
 function goFish () {
     playerDraw ()
@@ -299,7 +268,7 @@ function goFish () {
     handCheck ()
 }
 
-/* Has bot ask for a card and tell you how it went */
+/* Has bot ask for a card and indicate whether it was successful */
 
 function botAskPlayerForCard () {
     const askIndex = Math.floor ((Math.random () * botHand.length))
@@ -398,14 +367,14 @@ function addBotPoint () {
     message.textContent = "Bet you didn't see that coming! Now, where were we?"
 }
 
-/* Allows deactivating modal once it pops up and you've read its message (generally following a point) */
+/* Closes the modal that displays when a point is added */
 
 function closePointModal () {
     toggleVisibility (modalWindow)
     gameCheck ()
 }
 
-/* Checks if the game is over, throws up modal window if so */
+/* Checks if the game is over, throws up a modal if so */
 
 function gameCheck () {
     if (botScore + playerScore === 13) {
