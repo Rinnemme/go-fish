@@ -1,4 +1,4 @@
-const deck = [
+let deck = [
     {suit: 'spades', rank:"2"},
     {suit: 'spades', rank:"3"},
     {suit: 'spades', rank:"4"},
@@ -73,12 +73,11 @@ const scoreboardToggleButton = document.getElementById ("score-button")
 const botTurnButton = document.getElementById ("bot-turn")
 
 let convertedRank = ""
+let firstTurn = ""
 let botHand = []
 let botScore = 0
-let firstTurn = ""
 let playerHand = []
 let playerScore = 0
-let playingDeck = deck;
 
 /* Hides and unhides elements by toggling two classes simultaneously */
 
@@ -113,8 +112,8 @@ function rankConvert (targetrank) {
 
 function handCheck () {
     if (botHand.length === 0) {
-        if (playingDeck.length < 5) {
-            while (playingDeck.length > 0) {
+        if (deck.length < 5) {
+            while (deck.length > 0) {
                 botDraw ()
             }
         }
@@ -123,8 +122,8 @@ function handCheck () {
         }
     }
     if (playerHand.length === 0) {
-        if (playingDeck.length < 5) {
-            while (playingDeck.length > 0) {
+        if (deck.length < 5) {
+            while (deck.length > 0) {
                 playerDraw ()
             }
         }
@@ -204,19 +203,19 @@ function displayHeldRanks () {
 /* Draws random cards from the playing deck */
 
 function playerDraw () {
-    const pickIndex = Math.floor ((Math.random () * playingDeck.length))
-    const card = playingDeck [pickIndex]
+    const pickIndex = Math.floor ((Math.random () * deck.length))
+    const card = deck [pickIndex]
     playerHand.unshift (card)
-    playingDeck.splice (pickIndex, 1)
+    deck.splice (pickIndex, 1)
     const cardImage = document.getElementById (`${card.suit}${card.rank}`)
     toggleVisibility (cardImage)
 }
 
 function botDraw () {
-    const pickIndex = Math.floor ((Math.random () * playingDeck.length))
-    const card = playingDeck [pickIndex]
+    const pickIndex = Math.floor ((Math.random () * deck.length))
+    const card = deck [pickIndex]
     botHand.unshift (card)
-    playingDeck.splice (pickIndex, 1) 
+    deck.splice (pickIndex, 1) 
 }
 
 /* Asks the bot for a card */
@@ -237,7 +236,7 @@ function askBotForCard (targetRank) {
         }
     })
     if (!botHasCard) {
-        if (playingDeck.length === 0) {
+        if (deck.length === 0) {
             message.textContent = "Nope, and the deck's all gone, so you can't go fish!"
             toggleVisibility (botTurnButton)
             return;
@@ -282,7 +281,7 @@ function botAskPlayerForCard () {
         }
     })
     if (!playerHasCard) {
-        if (playingDeck.length === 0) {
+        if (deck.length === 0) {
             convertedRank = targetRank
             rankConvert (targetRank)
             message.textContent = `You have no ${convertedRank}s, and the deck is empty, so I can't go fish`
