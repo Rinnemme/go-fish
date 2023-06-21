@@ -171,7 +171,6 @@ button:active,
 .playing-card {
     box-sizing:border-box;
     height:100%;
-    overflow:scroll;
     padding:10px;
 }
 
