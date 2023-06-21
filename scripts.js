@@ -55,7 +55,7 @@ const deck = [
 const doesBotHaveAny = document.getElementById("do-you-have")
 const botScoreBoard = document.getElementById("bot-score")
 const cardImages = Array.from(document.querySelectorAll(".playing-card"))
-const goFish = document.getElementById("go-fish")
+const goFishButton = document.getElementById("go-fish")
 const message = document.getElementById("message")
 const modalOk = document.getElementById("modal-button")
 const playAgain = document.getElementById("play-again-button")
@@ -275,7 +275,7 @@ function askBotForCard(targetRank) {
             return;
         }
         message.textContent = "Nope! Looks like you gotta go fish."
-        toggleVisibility(goFish)
+        toggleVisibility(goFishButton)
     } else {
         message.textContent = "Darn, I do! Here you go, you rapscallion..."
         toggleVisibility(botTurnButton)
@@ -287,17 +287,17 @@ function askBotForCard(targetRank) {
 
 /* Fishes for the player*/
 
-goFish.addEventListener("click", function() {
+function goFish() {
     playerDraw()
     let rankname = playerHand[0].rank
     convertedRank = rankname
     rankConvert(rankname)
     message.textContent = `Enjoy that ${convertedRank} of ${playerHand[0].suit}!`
-    toggleVisibility(goFish)
+    toggleVisibility(goFishButton)
     toggleVisibility(botTurnButton)
     playerPointCheck()
     handCheck()
-})
+}
 
 /* Has bot ask for a card and tell you how it went */
 
