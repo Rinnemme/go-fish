@@ -66,9 +66,9 @@ const okStart = document.getElementById("ok-start")
 const playerScoreBoard = document.getElementById("player-score")
 const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
 const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a"]
-const scoreBoard = document.getElementById("score")
+const scoreboard = document.getElementById("score")
 const startButton = document.getElementById("start-button")
-const scoreHider = document.getElementById("score-button")
+const scoreboardToggleButton = document.getElementById("score-button")
 const turns = ["player","bot"]
 const yourTurn = document.getElementById("bot-turn")
 
@@ -76,7 +76,6 @@ let convertedRank = ""
 let botHand = []
 let botScore = 0
 let currentTurn = ""
-let game = "on" /* May be used later for replay function */
 let playerHand = []
 let playerScore = 0
 let playingDeck = deck;
@@ -91,14 +90,14 @@ function toggleVisibility(element) {
 
 /* Toggles scoreboard */
 
-scoreHider.addEventListener("click", function() {
-    toggleVisibility(scoreBoard)
-    if(scoreBoard.classList.contains("invisible")) {
-        scoreHider.textContent="Show Score"
+function toggleScoreboard() {
+    toggleVisibility(scoreboard)
+    if(scoreboard.classList.contains("invisible")) {
+        scoreboardToggleButton.textContent="Show Score"
     } else {
-        scoreHider.textContent="Hide Score"
+        scoreboardToggleButton.textContent="Hide Score"
     }
-})
+}
 
 /* Enables player asking bot for specific cards using buttons */
 
@@ -178,8 +177,8 @@ startButton.addEventListener("click", function() {
 okStart.addEventListener("click", function() {
     handCheck()
     activateRankButtons()
-    toggleVisibility(scoreBoard)
-    toggleVisibility(scoreHider)
+    toggleVisibility(scoreboard)
+    toggleVisibility(scoreboardToggleButton)
     toggleVisibility(okStart)
     if (currentTurn==="bot") {
         toggleVisibility(yourTurn)
