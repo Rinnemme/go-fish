@@ -7,7 +7,7 @@ const deck = [
     {suit: 'spades', rank:7},
     {suit: 'spades', rank:8},
     {suit: 'spades', rank:9},
-    {suit: 'spades', rank:10},
+    {suit: 'spades', rank:"t"},
     {suit: 'spades', rank:"j"},
     {suit: 'spades', rank:"q"},
     {suit: 'spades', rank:"k"},
@@ -20,7 +20,7 @@ const deck = [
     {suit: 'hearts', rank:7},
     {suit: 'hearts', rank:8},
     {suit: 'hearts', rank:9},
-    {suit: 'hearts', rank:10},
+    {suit: 'hearts', rank:"t"},
     {suit: 'hearts', rank:"j"},
     {suit: 'hearts', rank:"q"},
     {suit: 'hearts', rank:"k"},
@@ -33,7 +33,7 @@ const deck = [
     {suit: 'clubs', rank:7},
     {suit: 'clubs', rank:8},
     {suit: 'clubs', rank:9},
-    {suit: 'clubs', rank:10},
+    {suit: 'clubs', rank:"t"},
     {suit: 'clubs', rank:"j"},
     {suit: 'clubs', rank:"q"},
     {suit: 'clubs', rank:"k"},
@@ -46,7 +46,7 @@ const deck = [
     {suit: 'diamonds', rank:7},
     {suit: 'diamonds', rank:8},
     {suit: 'diamonds', rank:9},
-    {suit: 'diamonds', rank:10},
+    {suit: 'diamonds', rank:"t"},
     {suit: 'diamonds', rank:"j"},
     {suit: 'diamonds', rank:"q"},
     {suit: 'diamonds', rank:"k"},
@@ -65,7 +65,7 @@ const myTurn = document.getElementById("player-turn")
 const okStart = document.getElementById("ok-start")
 const playerScoreBoard = document.getElementById("player-score")
 const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
-const ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k", "a"]
+const ranks = [2, 3, 4, 5, 6, 7, 8, 9, "t", "j", "q", "k", "a"]
 const scoreBoard = document.getElementById("score")
 const startButton = document.getElementById("start-button")
 const scoreHider = document.getElementById("score-button")
@@ -110,14 +110,13 @@ function activateRankButtons() {
     })
 }
 
-/* Deals a hand of 5 to each player */
+/* Deals a hand of 5 when any player has 0 cards, including at the beginning of the game */
 
-function dealHands() {
-    playerHandCheck()
-    botHandCheck()
-    // for(let i=1;i<6;i++) {playerDraw()}
-    // for(let i=1;i<6;i++) {botDraw()}
-}
+// function dealHands() {
+//     handCheck()
+//     // for(let i=1;i<6;i++) {playerDraw()}
+//     // for(let i=1;i<6;i++) {botDraw()}
+// }
 
 /* Establishes who gets first turn */
 
@@ -129,6 +128,7 @@ function pickTurn() {
 
 yourTurn.addEventListener("click", function() {
     botAsk()
+    botPointCheck()
 })
 
 /* Makes it the player's turn */
@@ -160,7 +160,7 @@ startButton.addEventListener("click", function() {
 /* Actually kicks off the action */
 
 okStart.addEventListener("click", function() {
-    dealHands()
+    handCheck()
     activateRankButtons()
     toggleVisibility(scoreBoard)
     toggleVisibility(scoreHider)
@@ -214,6 +214,7 @@ function rankConvert(targetrank) {
         else if (targetrank === "q") {convertedRank = "queen"}
         else if (targetrank === "k") {convertedRank = "king"}
         else if (targetrank === "a") {convertedRank = "ace"}
+        else if (targetrank === "t") {convertedRank = "10"}
     }
 }
 
@@ -279,6 +280,7 @@ function askBot(askRank) {
         toggleVisibility(yourTurn)
         playerPointCheck()
         botHand = botHand.filter(card => card.rank!=askRank)
+        handCheck()
     }
 }
 
@@ -293,6 +295,7 @@ goFish.addEventListener("click", function() {
     toggleVisibility(goFish)
     toggleVisibility(yourTurn)
     playerPointCheck()
+    handCheck()
 })
 
 /* Has bot ask for a card and tell you how it went */
@@ -333,7 +336,7 @@ function botAsk() {
     }
     toggleVisibility(yourTurn)
     toggleVisibility(myTurn)
-    botPointCheck()
+    handCheck()
 }
 
 /* Checks point conditions for player */
@@ -443,14 +446,25 @@ playAgain.addEventListener("click", function() {location.reload()})
 
 // Checks whether bot/player hands have reached 0 and draws five cards if so
 
-function botHandCheck() {
+function handCheck() {
     if (botHand.length===0) {
-        for(let i=1;i<6;i++) {botDraw()}
+        if (playingDeck.length<5) {
+            while (playingDeck.length>0) {
+                botDraw()
+            }
+        }
+        else {
+            for(let i=1;i<6;i++) {botDraw()}
+        }
     }
-}
-
-function playerHandCheck() {
     if (playerHand.length===0) {
-        for(let i=1;i<6;i++) {playerDraw()}
+        if (playingDeck.length<5) {
+            while (playingDeck.length>0) {
+                botDraw()
+            }
+        }
+        else {
+            for(let i=1;i<6;i++) {playerDraw()}
+        }
     }
 }
