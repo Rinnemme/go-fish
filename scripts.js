@@ -70,7 +70,7 @@ const scoreboard = document.getElementById("score")
 const startButton = document.getElementById("start-button")
 const scoreboardToggleButton = document.getElementById("score-button")
 const turns = ["player","bot"]
-const yourTurn = document.getElementById("bot-turn")
+const botTurnButton = document.getElementById("bot-turn")
 
 let convertedRank = ""
 let botHand = []
@@ -131,10 +131,10 @@ function pickTurn() {
 
 /* Makes it the bot's turn */
 
-yourTurn.addEventListener("click", function() {
+function makeBotTurn() {
     botAsk()
     botPointCheck()
-})
+}
 
 /* Makes it the player's turn */
 
@@ -170,7 +170,7 @@ okStart.addEventListener("click", function() {
     toggleVisibility(scoreboardToggleButton)
     toggleVisibility(okStart)
     if (currentTurn==="bot") {
-        toggleVisibility(yourTurn)
+        toggleVisibility(botTurnButton)
         botAsk()
     }
     if (currentTurn==="player") {
@@ -274,14 +274,14 @@ function askBotForCard(targetRank) {
     if (successful==="no") {
         if (playingDeck.length===0) {
             message.textContent = "Nope, and the deck's all gone! Guess it's my turn."
-            toggleVisibility(yourTurn)
+            toggleVisibility(botTurnButton)
             return;
         }
         message.textContent = "Nope! Looks like you gotta go fish."
         toggleVisibility(goFish)
     } else {
         message.textContent = "Darn, I do! Here you go, you rapscallion..."
-        toggleVisibility(yourTurn)
+        toggleVisibility(botTurnButton)
         playerPointCheck()
         botHand = botHand.filter(card => card.rank!==targetRank)
         handCheck()
@@ -297,7 +297,7 @@ goFish.addEventListener("click", function() {
     rankConvert(rankname)
     message.textContent = `Enjoy that ${convertedRank} of ${playerHand[0].suit}!`
     toggleVisibility(goFish)
-    toggleVisibility(yourTurn)
+    toggleVisibility(botTurnButton)
     playerPointCheck()
     handCheck()
 })
@@ -328,7 +328,7 @@ function botAsk() {
             convertedRank=targetRank
             rankConvert(targetRank)
             message.textContent = `You have no ${convertedRank}s, and the deck is empty. Back to you!`
-            toggleVisibility(yourTurn)
+            toggleVisibility(botTurnButton)
             toggleVisibility(myTurn)
             return;
         }
@@ -338,7 +338,7 @@ function botAsk() {
         message.textContent = `I wanted at least ONE ${convertedRank}, but alas, I had to go fish.`
         
     }
-    toggleVisibility(yourTurn)
+    toggleVisibility(botTurnButton)
     toggleVisibility(myTurn)
     handCheck()
 }
