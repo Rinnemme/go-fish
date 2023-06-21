@@ -58,7 +58,7 @@ const cardImages = Array.from(document.querySelectorAll(".playing-card"))
 const goFishButton = document.getElementById("go-fish")
 const message = document.getElementById("message")
 const modalOk = document.getElementById("modal-button")
-const playAgain = document.getElementById("play-again-button")
+const playAgainButton = document.getElementById("play-again-button")
 const modalWindow = document.getElementById("modal")
 const modalMessage = document.getElementById("modal-text")
 const playerTurnButton = document.getElementById("player-turn")
@@ -420,6 +420,6 @@ function gameCheck() {
         }
         toggleVisibility(modal)
         modalOk.classList.add("invisible")
-        toggleVisibility(playAgain)
+        toggleVisibility(playAgainButton)
     }
 }
