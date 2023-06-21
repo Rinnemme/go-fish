@@ -184,8 +184,7 @@ function doesBotHave () {
     toggleVisibility (doesBotHaveAny)
     rankButtons.forEach (button => {
         playerHand.forEach (card => {
-            const checkRank = button.id
-            if (checkRank === card.rank && !button.classList.contains ("visible")) {
+            if (button.id.includes (card.rank) && !button.classList.contains ("visible")) {
             toggleVisibility (button)
             } 
         })
