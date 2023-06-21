@@ -16,10 +16,8 @@
     </div>
     <div id="modal" class="invisible">
         <div id="modal-window">
-            <div id="modal-text">
-            
-            </div>
-            <button id="modal-button" onclick="closePointModal()">
+            <div id="modal-text"></div>
+            <button id="modal-button" onclick="closeModal()">
                 OK
             </button>
             <button id="play-again-button" class="invisible" onclick="location.reload()">
@@ -30,9 +28,9 @@
     <img id="header-image" src="img/heading.png">
     <div id="message">Let's play some Go Fish!</div>
     <div id="button-container">
-        <button class="visible" id="start-button" onclick="startGame()">Start</button>
+        <button class="visible" id="start-button" onclick="pickFirstTurn()">Start</button>
         <button class="invisible" id="go-fish" onclick="goFish()">Go fish</button>
-        <button class="invisible" id="first-turn-ok" onclick="acknowledgeFirstTurn()">OK</button>
+        <button class="invisible" id="first-turn-ok" onclick="initiateFirstTurn()">OK</button>
         <button class="invisible" id="do-you-have" onclick="displayHeldRanks()">Do you have any...</button>
         <button class="invisible" id="bot-turn" onclick="executeBotTurn()">OK, your turn</button>
         <button class="invisible" id="player-turn" onclick="initiatePlayerTurn()">OK, my turn</button>
