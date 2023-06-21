@@ -238,14 +238,14 @@ function askBotForCard (targetRank) {
     })
     if (!botHasCard) {
         if (playingDeck.length === 0) {
-            message.textContent = "Nope, and the deck's all gone! Guess it's my turn."
+            message.textContent = "Nope, and the deck's all gone, so you can't go fish!"
             toggleVisibility (botTurnButton)
             return;
         }
-        message.textContent = "Nope! Looks like you gotta go fish."
+        message.textContent = "Nope - go fish!"
         toggleVisibility (goFishButton)
     } else {
-        message.textContent = "Darn, I do! Here you go, you rapscallion..."
+        message.textContent = "I do! Here you go."
         toggleVisibility (botTurnButton)
         playerPointCheck ()
         botHand = botHand.filter (card => card.rank !== targetRank)
@@ -260,7 +260,7 @@ function goFish () {
     let rankname = playerHand [0].rank
     convertedRank = rankname
     rankConvert (rankname)
-    message.textContent = `Enjoy that ${convertedRank} of ${playerHand [0].suit}!`
+    message.textContent = `You got a ${convertedRank} of ${playerHand [0].suit}`
     toggleVisibility (goFishButton)
     toggleVisibility (botTurnButton)
     playerPointCheck ()
@@ -293,11 +293,11 @@ function botAskPlayerForCard () {
         botDraw ()
         convertedRank = targetRank
         rankConvert (targetRank)
-        message.textContent = `I wanted at least ONE ${convertedRank}, but alas, I had to go fish.`
+        message.textContent = `You have no ${convertedRank}s, so I went fish.`
     } else {
         convertedRank = targetRank
         rankConvert (targetRank)
-        message.textContent = `I'll just go ahead and take any ${convertedRank}s you have.`
+        message.textContent = `I've taken any ${convertedRank}s you had.`
         playerHand = playerHand.filter (card => card.rank !== targetRank)
     }
     toggleVisibility (botTurnButton)
@@ -328,14 +328,14 @@ function playerPointCheck () {
 function playerPointModal (rank) {
     convertedRank = rank
     rankConvert (rank)
-    modalMessage.textContent = `Wow, you've gathered all the ${convertedRank}s! That's one point for you!`
+    modalMessage.textContent = `You've gathered all the ${convertedRank}s, and scored a point`
     toggleVisibility (modalWindow)
 }
 
 function addPlayerPoint () {
     playerScore += 1
     playerScoreBoard.textContent = playerScore
-    message.textContent = "Congrats on your point! Now, where were we?"
+    message.textContent = "Congrats on your point!"
 }
 
 /* Checks point conditions for bot */
@@ -356,14 +356,14 @@ function botPointCheck () {
 function botPointModal (rank) {
     convertedRank = rank
     rankConvert (rank)
-    modalMessage.textContent = `I've gathered all the ${convertedRank}s! That's one point for me!`
+    modalMessage.textContent = `I've gathered all the ${convertedRank}s, and scored a point`
     toggleVisibility (modalWindow)
 }
 
 function addBotPoint () {
     botScore += 1
     botScoreBoard.textContent = botScore
-    message.textContent = "Bet you didn't see that coming! Now, where were we?"
+    message.textContent = "Now, where were we?"
 }
 
 /* Closes the modal that displays when a point is added */
@@ -379,9 +379,9 @@ function gameCheck () {
     if (botScore + playerScore === 13) {
         game = "done"
         if (botScore > playerScore) {
-            modalMessage.textContent = `And that's game! Looks like I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
+            modalMessage.textContent = `And that's game! I won with ${botScore} sets of four to your ${playerScore}. Better luck next time!`
         } else {
-            modalMessage.textContent = `And that's game! Looks like you won with ${playerScore} sets of four to my ${botScore} - congratulations!`
+            modalMessage.textContent = `And that's game! You won with ${playerScore} sets of four to my ${botScore} - congratulations!`
         }
         toggleVisibility (modal)
         modalOk.classList.add ("invisible") 
