@@ -121,9 +121,10 @@ button {
 button:hover,
 #score-button:hover {
     background-color:rgb(45,45,45);
+    color:white;
     cursor:pointer;
     scale:1.05;
-    transition:1s;
+    transition:0.2s;
 }
 
 button:active,
@@ -182,7 +183,8 @@ button:active,
 }
 
 #score-button {
-    background-color:rgb(196, 196, 196);
+    background-color:rgb(240, 240, 240);
+    color:gray;
     font-size:14px;
     margin-top:30px;
 }
