@@ -62,7 +62,7 @@ const playAgain = document.getElementById("play-again-button")
 const modalWindow = document.getElementById("modal")
 const modalMessage = document.getElementById("modal-text")
 const playerTurnButton = document.getElementById("player-turn")
-const okStart = document.getElementById("ok-start")
+const firstTurnOk = document.getElementById("first-turn-ok")
 const playerScoreBoard = document.getElementById("player-score")
 const rankButtons = Array.from(document.querySelectorAll(".rank-button"))
 const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "t", "j", "q", "k", "a"]
@@ -146,26 +146,25 @@ function makePlayerTurn() {
 
 /* Lets the player know, before the action, who is acting first */
 
-startButton.addEventListener("click", function() {
+function startGame() {
     handCheck()
     toggleVisibility(scoreboard)
     toggleVisibility(scoreboardToggleButton)
     pickTurn()
     toggleVisibility(startButton)
-    toggleVisibility(okStart)
+    toggleVisibility(firstTurnOk)
     if (firstTurn==="bot") {
         message.textContent = "Looks like I'm up first!"
     }
     if (firstTurn==="player") {
         message.textContent = "Looks like you're up first!"
     }
-})
+}
 
 /* Actually kicks off the action */
 
-okStart.addEventListener("click", function() {
-    
-    toggleVisibility(okStart)
+function acknowledgeFirstTurn() {
+    toggleVisibility(firstTurnOk)
     if (firstTurn==="bot") {
         toggleVisibility(botTurnButton)
         botAsk()
@@ -174,7 +173,7 @@ okStart.addEventListener("click", function() {
         message.textContent = "Ask me for a card rank you've got!"
         toggleVisibility(doesBotHaveAny)
     }
-})
+}
 
 /* Displays list of ranks you can ask for */
 
