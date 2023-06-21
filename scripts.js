@@ -79,7 +79,6 @@ let playerHand = []
 let playerScore = 0
 let playingDeck = deck;
 
-
 /* Hides and unhides elements by toggling two classes simultaneously */
 
 function toggleVisibility (element) {
@@ -359,8 +358,8 @@ function playerPointCheck() {
         const checkingObject = playerHand.filter(card => card.rank===targetRank)
         if (checkingObject.length === 4) {
             cardImages.forEach (image => {
-                if (image.id === targetRank && image.classList.contains("visible")) {
-                    toggleVisibility(image)
+                if (image.id.includes (targetRank) && image.classList.contains ("visible")) {
+                    toggleVisibility (image)
                 }
             })
             playerHand = playerHand.filter(card => card.rank !== targetRank)
