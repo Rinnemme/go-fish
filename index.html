@@ -8,12 +8,6 @@
     <title>Go Fish</title>
 </head>
 <body>
-    <div id="score" class="invisible">
-        <div class="score-label">Player</div>
-        <div id="player-score">0</div>
-        <div class="score-label">Bot</div>
-        <div id="bot-score">0</div>
-    </div>
     <div id="modal" class="invisible">
         <div id="modal-window">
             <div id="modal-text"></div>
@@ -106,7 +100,17 @@
         </div>
         <div id=fade-right></div>
     </div>
-    <button class="invisible" id="score-button" onclick="toggleScoreboard()">Hide Score</button>
+    <button class="invisible" id="score-button" onclick="toggleScoreboard()">Show Score</button>
+    <div id="score">
+        <div id="player-score-container">
+            <div class="score-label">Player</div>
+            <div id="player-score">0</div>
+        </div>
+        <div id="bot-score-container">
+            <div class="score-label">Bot</div>
+            <div id="bot-score">0</div>
+        </div>
+    </div>
     <script src="scripts.js"></script>
 </body>
 </html>

@@ -82,7 +82,6 @@ let playerScore = 0
 function pickFirstTurn () {
     emptyHandCheck ()
     firstTurn = Math.floor (Math.random () * 2)
-    toggleVisibility (scoreboard)
     toggleVisibility (scoreboardToggleButton)
     toggleVisibility (startButton)
     toggleVisibility (firstTurnOk)
@@ -342,9 +341,11 @@ function gameCheck () {
 
 function toggleScoreboard () {
     toggleVisibility (scoreboard)
-    if (scoreboard.classList.contains ("invisible")) {
+    if (scoreboardToggleButton.textContent.includes ("Hide")) {
+        scoreboard.style.display="none"
         scoreboardToggleButton.textContent = "Show Score"
     } else {
+        scoreboard.style.display="flex"
         scoreboardToggleButton.textContent = "Hide Score"
     }
 }
